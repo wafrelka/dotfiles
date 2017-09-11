@@ -1,0 +1,27 @@
+set -g window-status-current-fg white
+set -g window-status-current-bg red
+set -g status-bg blue
+
+bind x set -g status-bg blue
+bind y set -g status-bg green
+bind z set -g status-bg magenta
+
+bind c new-window -c "#{pane_current_path}"
+bind | split-window -h
+bind - split-window -v
+bind r command-prompt "rename-window %%"
+bind s source-file ~/.tmux.conf \; display-message ".tmux.conf reloaded"
+
+set -g status-interval 1
+set -g status-left "[#S] "
+set -g status-right "[#H] %m/%d %H:%M:%S"
+
+set -g history-limit 65536
+set -g base-index 1
+set -g pane-base-index 1
+set -g renumber-windows on
+
+set -g default-shell /bin/zsh
+set -g default-terminal screen-256color
+set -g terminal-overrides 'xterm:colors=256'
+set-environment -g CHERE_INVOKING 1

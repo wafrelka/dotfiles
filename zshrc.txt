@@ -1,0 +1,141 @@
+# alias
+
+alias ls='ls -F --color'
+alias la='ls -F --color -A'
+alias ll='ls -F --color -l'
+alias lx='ls -F --color -A -l'
+alias less='less -R'
+alias gxx='g++ --std=c++11 -O2 -Wall'
+alias dstat-all='dstat -tclmsdn'
+alias dstat-top='dstat -tclmsdn --top-cpu --top-io'
+alias be='bundle exec'
+alias ber='bundle exec ruby'
+alias panpdf='pandoc -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in'
+
+
+# environment variable
+
+export LANG=ja_JP.UTF-8
+export EDITOR=vim
+
+
+# auto completion
+
+autoload -Uz compinit
+compinit
+
+setopt list_packed
+setopt auto_param_slash
+setopt mark_dirs
+setopt list_types
+setopt auto_menu
+setopt auto_param_keys
+setopt magic_equal_subst
+setopt complete_in_word
+setopt always_last_prompt
+
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
+
+
+# ls coloring
+
+export LS_COLORS='di=01;36:ln=35:so=32:pi=33:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31' 'bd=46;34' 'cd=43;34' 'su=41;30' 'sg=46;30' 'tw=42;30' 'ow=43;30'
+
+
+# command history
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+
+setopt hist_ignore_dups
+setopt share_history
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt extended_history
+
+bindkey '^r' history-incremental-pattern-search-backward
+bindkey '^s' history-incremental-pattern-search-forward
+
+
+# other options
+
+setopt autopushd
+setopt pushd_ignore_dups
+setopt print_eight_bit
+setopt no_flow_control
+setopt long_list_jobs
+setopt notify
+setopt prompt_subst
+autoload -Uz add-zsh-hook
+bindkey -e
+
+
+# VCS
+
+autoload -Uz vcs_info
+
+zstyle ":vcs_info:*" enable git svn
+zstyle ':vcs_info:*' formats '[%b]'
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+
+zstyle ':vcs_info:svn:*' branchformat '%b(r%r)'
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "!"
+zstyle ':vcs_info:git:*' unstagedstr "?"
+zstyle ':vcs_info:git:*' formats '[%b(%u%c)]'
+zstyle ':vcs_info:git:*' actionformats '[%b(%u%c)|%a]'
+
+
+# prompt
+
+_vcs_prompt() {
+    vcs_info
+    if [[ -n ${vcs_info_msg_0_} ]]; then
+        echo "${vcs_info_msg_0_}"
+    fi
+}
+
+_ssh_prompt() {
+	if [[ -n ${SSH_CONNECTION} ]]; then
+		echo "${SSH_CONNECTION}" | awk '{print "(" $1 ")"}'
+	fi
+}
+
+_virtualenv_prompt() {
+		if [[ -n "$VIRTUAL_ENV" ]]; then
+			venv="\n[env: ${VIRTUAL_ENV##*/}]"
+		else
+			venv=""
+		fi
+		echo "${venv}"
+}
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# black: 0, red: 1, green: 2, yellow: 3
+# blue: 4, magenta: 5, cyan: 6, white: 7
+# bright: +8
+
+PROMPT=$'\n%(!,%B%U,)%F{14}%/%f%(!,%u%b,)'\
+$' %F{10}$(_vcs_prompt)%f%F{10}$(_virtualenv_prompt)%f'\
+$'\n%(!,%B%U,)%F{13}%n%f@%F{11}%m%f%F{12}%U$(_ssh_prompt)%u%f%(!,%u%b,)'\
+$' %(?,%F{10},%F{9})%(!,%B%U#%u%b,$)%f '
+RPROMPT='%F{11}%*%f'
+
+
+# terminal title
+
+case "${TERM}" in
+kterm*|xterm*)
+    _update_term_title() {
+        echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+    }
+    add-zsh-hook precmd _update_term_title
+esac

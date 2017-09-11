@@ -1,0 +1,23 @@
+set nocompatible
+set number
+set title
+set ruler
+set cursorline
+
+set autoindent
+set smartindent
+set wrapscan
+set showmatch
+set hlsearch
+set tabstop=4
+set shiftwidth=4
+set noexpandtab
+set backspace=indent,eol,start
+set whichwrap=b,s,h,l,<,>,[,]
+
+syntax on
+hi LineNr ctermbg=234 ctermfg=7
+hi CursorLineNr ctermbg=7 ctermfg=0
+hi clear CursorLine
+
+set fileencodings=utf-8,cp932,euc-jp,latin1
