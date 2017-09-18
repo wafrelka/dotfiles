@@ -1,9 +1,9 @@
 # alias
 
-alias ls='ls -F --color'
-alias la='ls -F --color -A'
-alias ll='ls -F --color -l'
-alias lx='ls -F --color -A -l'
+alias ls='ls -F --color=auto'
+alias la='ls -F --color=auto -A'
+alias ll='ls -F --color=auto -l'
+alias lx='ls -F --color=auto -A -l'
 alias less='less -R'
 alias gxx='g++ --std=c++11 -O2 -Wall'
 alias dstat-all='dstat -tclmsdn'
