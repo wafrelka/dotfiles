@@ -5,6 +5,7 @@ set -g status-bg blue
 bind x set -g status-bg blue
 bind y set -g status-bg green
 bind z set -g status-bg magenta
+bind C-b send-prefix
 
 bind c new-window -c "#{pane_current_path}"
 bind | split-window -h
