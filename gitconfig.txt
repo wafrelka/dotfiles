@@ -1,0 +1,9 @@
+[push]
+	default = simple
+[user]
+	email = wafrelka@gmail.com
+	name = wafrelka
+[alias]
+	ln = log --decorate --oneline --stat
+	lg = log --decorate --oneline --graph
+	
