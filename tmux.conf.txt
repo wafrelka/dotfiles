@@ -11,7 +11,9 @@ bind c new-window -c "#{pane_current_path}"
 bind | split-window -h
 bind - split-window -v
 bind r command-prompt "rename-window %%"
-bind s source-file ~/.tmux.conf \; display-message ".tmux.conf reloaded"
+bind C-Left swap-window -t -1
+bind C-Right swap-window -t +1
+bind . source-file ~/.tmux.conf \; display-message ".tmux.conf reloaded"
 
 set -g status-interval 1
 set -g status-left "[#S] "
