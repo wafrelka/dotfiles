@@ -139,3 +139,31 @@ kterm*|xterm*)
     }
     add-zsh-hook precmd _update_term_title
 esac
+
+# peco
+
+function peco-history-selection() {
+	BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
+	CURSOR=$#BUFFER
+	zle redisplay
+}
+function peco-file-search() {
+	selected="$(find . | peco --prompt "file>" | tr '\n' ' ')"
+	BUFFER="$LBUFFER$selected$RBUFFER"
+	CURSOR=$#BUFFER
+	zle redisplay
+}
+function peco-file-selection() {
+	BUFFER="$(find . | peco --query "$LBUFFER" --prompt "file>" | tr '\n' ' ')"
+	CURSOR=$#BUFFER
+	zle redisplay
+}
+
+if which peco > /dev/null; then
+	zle -N peco-history-selection
+	zle -N peco-file-selection
+	zle -N peco-file-search
+	bindkey '^r' peco-history-selection
+	bindkey '^f' peco-file-selection
+	bindkey '^@' peco-file-search
+fi
