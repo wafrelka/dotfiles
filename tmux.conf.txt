@@ -2,10 +2,8 @@ set -g window-status-current-fg white
 set -g window-status-current-bg red
 set -g status-bg blue
 
-bind x set -g status-bg blue
-bind y set -g status-bg green
-bind z set -g status-bg magenta
-bind C-b send-prefix
+bind x set -g status-bg blue \; set -g prefix C-b
+bind y set -g status-bg magenta \; set -g prefix C-y
 
 bind c new-window -c "#{pane_current_path}"
 bind | split-window -h
