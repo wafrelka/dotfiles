@@ -13,6 +13,9 @@ bind C-Left swap-window -t -1
 bind C-Right swap-window -t +1
 bind . source-file ~/.tmux.conf \; display-message ".tmux.conf reloaded"
 
+bind u resize-pane -U 1
+bind i resize-pane -D 1
+
 set -g status-interval 1
 set -g status-left "[#S] "
 set -g status-right "[#H] %m/%d %H:%M:%S"
