@@ -125,7 +125,6 @@ PROMPT=$'\n%(!,%B%U,)%F{14}%/%f%(!,%u%b,)'\
 $' %F{10}$(_vcs_prompt)%f%F{10}$(_virtualenv_prompt)%f'\
 $'\n%(!,%B%U,)%F{13}%n%f@%F{11}%m%f%K{4}%U$(_ssh_prompt)%u%k%(!,%u%b,)'\
 $' %(?,%F{10},%F{9})%(!,%B%U#%u%b,$)%f '
-RPROMPT='%F{11}%*%f'
 
 
 # terminal title
