@@ -1,5 +1,7 @@
 set -g window-status-current-fg white
 set -g window-status-current-bg red
+set -g window-status-current-attr bold
+set -g window-status-bg white
 set -g status-bg blue
 
 bind x set -g status-bg blue \; set -g prefix C-b
