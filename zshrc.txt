@@ -82,15 +82,15 @@ bindkey -e
 autoload -Uz vcs_info
 
 zstyle ":vcs_info:*" enable git svn
-zstyle ':vcs_info:*' formats '| %b'
-zstyle ':vcs_info:*' actionformats '| %b(%a)'
+zstyle ':vcs_info:*' formats '%b'
+zstyle ':vcs_info:*' actionformats '%b(%a)'
 
 zstyle ':vcs_info:svn:*' branchformat '%b@r%r'
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "!"
 zstyle ':vcs_info:git:*' unstagedstr "?"
-zstyle ':vcs_info:git:*' formats '| %b%u%c'
-zstyle ':vcs_info:git:*' actionformats '| %b%u%c(%a)'
+zstyle ':vcs_info:git:*' formats '%b%u%c'
+zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
 
 
 # prompt
@@ -98,7 +98,7 @@ zstyle ':vcs_info:git:*' actionformats '| %b%u%c(%a)'
 _vcs_prompt() {
     vcs_info
     if [[ -n ${vcs_info_msg_0_} ]]; then
-        echo "${vcs_info_msg_0_}"
+        echo " | ${vcs_info_msg_0_}"
     fi
 }
 
@@ -108,13 +108,10 @@ _ssh_prompt() {
 	fi
 }
 
-_virtualenv_prompt() {
+_env_prompt() {
 		if [[ -n "$VIRTUAL_ENV" ]]; then
-			venv="\n[env: ${VIRTUAL_ENV##*/}]"
-		else
-			venv=""
+			echo " +Py"
 		fi
-		echo "${venv}"
 }
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
@@ -123,7 +120,7 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 # bright: +8
 
 PROMPT=$'\n%(!,%B%U,)%F{14}%/%f%(!,%u%b,)'\
-$' %F{10}$(_vcs_prompt)%f%F{10}$(_virtualenv_prompt)%f'\
+$'%F{11}$(_env_prompt)%f%F{10}$(_vcs_prompt)%f'\
 $'\n%(!,%B%U,)%F{13}%n%f@%F{11}%m%f%K{4}%U$(_ssh_prompt)%u%k%(!,%u%b,)'\
 $' %(?,%F{10},%F{9})%(!,%B%U#%u%b,$)%f '
 
