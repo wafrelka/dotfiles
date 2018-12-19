@@ -149,17 +149,11 @@ function peco-file-search() {
 	CURSOR=$#BUFFER
 	zle redisplay
 }
-function peco-file-selection() {
-	BUFFER="$(find . | peco --rcfile "${HOME}/.dotfiles/peco.json" --query "$LBUFFER" --prompt "file>" | tr '\n' ' ')"
-	CURSOR=$#BUFFER
-	zle redisplay
-}
 
 if which peco > /dev/null; then
 	zle -N peco-history-selection
 	zle -N peco-file-selection
 	zle -N peco-file-search
 	bindkey '^r' peco-history-selection
-	bindkey '^f' peco-file-selection
 	bindkey '^@' peco-file-search
 fi
