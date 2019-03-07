@@ -6,4 +6,6 @@
 [alias]
 	ln = log --decorate --oneline --stat
 	lg = log --decorate --oneline --graph
-	
+	wdiff = diff --color-words
+	cdiff = diff --cached
+	cwdiff = diff --cached --color-words
