@@ -154,5 +154,5 @@ if which peco > /dev/null; then
 	zle -N peco-history-selection
 	zle -N peco-file-search
 	bindkey '^r' peco-history-selection
-	bindkey '^@' peco-file-search
+	bindkey '^f' peco-file-search
 fi
