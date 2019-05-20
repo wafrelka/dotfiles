@@ -2,7 +2,7 @@ set -g window-status-current-style fg=blue,bg=colour241,bold
 set -g status-style fg=white,bg=colour238
 
 bind x set -g window-status-current-style fg=blue,bg=colour240,bold \; set -g prefix C-b
-bind y set -g window-status-current-style fg=magenta,bg=colour240,bold \; set -g prefix C-y
+bind y set -g window-status-current-style fg=green,bg=colour240,bold \; set -g prefix C-y
 
 bind c new-window -c "#{pane_current_path}"
 bind | split-window -h
