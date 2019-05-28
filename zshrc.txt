@@ -14,7 +14,7 @@ alias ber='bundle exec ruby'
 
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
-export WORDCHARS="$(echo "$WORDCHARS" | sed s#/##g)"
+export WORDCHARS="$(echo "$WORDCHARS" | sed s:/::g)"
 
 
 # auto completion
