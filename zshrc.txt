@@ -95,35 +95,40 @@ zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
 
 # prompt
 
-_vcs_prompt() {
-    vcs_info
-    if [[ -n ${vcs_info_msg_0_} ]]; then
-        echo " | ${vcs_info_msg_0_}"
-    fi
-}
-
-_ssh_prompt() {
-	if [[ -n ${SSH_CONNECTION} ]]; then
-		echo "${SSH_CONNECTION}" | awk '{print "(" $1 ")"}'
-	fi
-}
-
-_env_prompt() {
-		if [[ -n "$VIRTUAL_ENV" ]]; then
-			echo " +Py"
-		fi
-}
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-
 # black: 0, red: 1, green: 2, yellow: 3
 # blue: 4, magenta: 5, cyan: 6, white: 7
 # bright: +8
 
-PROMPT=$'\n%(!,%B%U,)%F{14}%/%f%(!,%u%b,)'\
-$'%F{11}$(_env_prompt)%f%F{10}$(_vcs_prompt)%f'\
-$'\n%(!,%B%U,)%F{13}%n%f@%F{11}%m%f%K{4}%U$(_ssh_prompt)%u%k%(!,%u%b,)'\
-$' %(?,%F{10},%F{9})%(!,%B%U#%u%b,$)%f '
+_prompt() {
 
+	vcs_info
+
+	vcs_msg="${vcs_info_msg_0_}"
+	ssh_conn="${SSH_CONNECTION}"
+
+	echo -n "\n"
+	echo -n "%(!,%B%U,)%F{14}%/%f%(!,%u%b,)"
+	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
+	echo -n "\n"
+	echo -n "%(!,%B%U,)%F{13}%n%f@%F{11}${ssh_conn:+%S}%m${ssh_conn:+%s}%f%(!,%u%b,)"
+	echo -n " %(?,%F{10},%F{9})%(!,%B#%b,$)%f "
+}
+
+_rprompt() {
+
+	py_msg=""
+
+	if [[ -n "$VIRTUAL_ENV" ]]; then
+		py_msg="+Py"
+	fi
+
+	echo -n "%F{11}${py_msg}%f"
+
+}
+
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+PROMPT='$(_prompt)'
+RPROMPT='$(_rprompt)'
 
 # terminal title
 
