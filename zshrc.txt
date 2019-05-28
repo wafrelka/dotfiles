@@ -8,7 +8,6 @@ alias less='less -R --tabs=4'
 alias gxx='g++ --std=c++11 -O2 -Wall -fsanitize=undefined -g'
 alias be='bundle exec'
 alias ber='bundle exec ruby'
-alias panpdf='pandoc -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in'
 
 
 # environment variables
