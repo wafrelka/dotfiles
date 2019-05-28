@@ -1,4 +1,4 @@
-# alias
+# aliases
 
 alias ls='ls -F --color=auto'
 alias la='ls -F --color=auto -A'
@@ -11,7 +11,7 @@ alias ber='bundle exec ruby'
 alias panpdf='pandoc -V documentclass=ltjarticle --latex-engine=lualatex -V geometry:margin=1in'
 
 
-# environment variable
+# environment variables
 
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
