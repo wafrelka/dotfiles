@@ -142,12 +142,13 @@ esac
 
 # peco
 
-function peco-history-selection() {
+_peco_history_selection() {
 	BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --rcfile "${HOME}/.dotfiles/peco.json" --query "$LBUFFER" --prompt "history>")"
 	CURSOR=$#BUFFER
 	zle redisplay
 }
-function peco-file-search() {
+
+_peco_file_search() {
 	selected="$(find . | peco --rcfile "${HOME}/.dotfiles/peco.json" --prompt "file>" | tr '\n' ' ')"
 	BUFFER="$LBUFFER$selected$RBUFFER"
 	CURSOR=$#BUFFER
@@ -155,8 +156,8 @@ function peco-file-search() {
 }
 
 if which peco > /dev/null; then
-	zle -N peco-history-selection
-	zle -N peco-file-search
-	bindkey '^r' peco-history-selection
-	bindkey '^f' peco-file-search
+	zle -N _peco_history_selection
+	zle -N _peco_file_search
+	bindkey '^r' _peco_history_selection
+	bindkey '^f' _peco_file_search
 fi
