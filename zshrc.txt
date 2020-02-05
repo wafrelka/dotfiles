@@ -113,7 +113,7 @@ _prompt() {
 	echo -n "%(!,%B%U,)%F{14}%/%f%(!,%u%b,)"
 	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
 	echo -n "\n"
-	echo -n "%(!,%B%U,)%F{13}%n%f@%F{11}${ssh_conn:+%S}%m${ssh_conn:+%s}%f%(!,%u%b,)"
+	echo -n "%(!,%B%U,)%F{13}%n%f@%F{11}${ssh_conn:+%S}${(U)HOST%%.*}${ssh_conn:+%s}%f%(!,%u%b,)"
 	echo -n " %(?,%F{10},%F{9})%(!,%B#%b,$)%f "
 }
 
