@@ -115,7 +115,7 @@ _prompt() {
 	echo -n "\n"
 	echo -n "%F{13}%n%f"
 	if [ "" != "$ssh_conn" ]; then
-		echo -n "@%F{11}%B%U${(U)HOST%%.*}!%u%b%f"
+		echo -n "@%F{11}%B%U${(U)HOST%%.*}%u%b%f"
 	fi
 	echo -n " %(?,%F{10},%F{9})%(!,#,$)%f "
 }
