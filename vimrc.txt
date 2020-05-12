@@ -15,8 +15,8 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,]
 
 syntax on
-hi LineNr ctermbg=234 ctermfg=7
-hi CursorLineNr ctermbg=7 ctermfg=0
-hi clear CursorLine
+highlight LineNr ctermbg=0 ctermfg=7
+highlight CursorLineNr ctermbg=7 ctermfg=0
+highlight CursorLine cterm=none ctermbg=235
 
 set fileencodings=utf-8,cp932,euc-jp,latin1
