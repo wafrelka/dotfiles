@@ -1,17 +1,16 @@
 set nocompatible
-set number
 set title
-set ruler
+set number
 set cursorline
 
 set autoindent
 set smartindent
-set wrapscan
-set showmatch
-set hlsearch
 set tabstop=4
 set shiftwidth=4
 set noexpandtab
+set showmatch
+set hlsearch
+set wrapscan
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,]
 
