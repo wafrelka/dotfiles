@@ -15,6 +15,7 @@ set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,]
 
 syntax on
+colorscheme elflord
 highlight LineNr ctermbg=0 ctermfg=7
 highlight CursorLineNr ctermbg=7 ctermfg=0
 highlight CursorLine cterm=none ctermbg=235
