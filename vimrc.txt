@@ -13,11 +13,18 @@ set hlsearch
 set wrapscan
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,]
+set timeoutlen=100
 
 syntax on
 colorscheme elflord
 highlight LineNr ctermbg=0 ctermfg=7
 highlight CursorLineNr ctermbg=7 ctermfg=0
 highlight CursorLine cterm=none ctermbg=235
+
+augroup insert_highlighting
+autocmd!
+autocmd InsertEnter * highlight CursorLineNr ctermbg=6
+autocmd InsertLeave * highlight CursorLineNr ctermbg=7
+augroup END
 
 set fileencodings=utf-8,cp932,euc-jp,latin1
