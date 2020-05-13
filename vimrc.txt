@@ -13,6 +13,8 @@ set hlsearch
 set wrapscan
 set backspace=indent,eol,start
 set whichwrap=b,s,h,l,<,>,[,]
+set list
+set listchars=tab:»\ ,trail:·
 set timeoutlen=100
 
 syntax on
@@ -20,6 +22,7 @@ colorscheme elflord
 highlight LineNr ctermbg=0 ctermfg=7
 highlight CursorLineNr ctermbg=7 ctermfg=0
 highlight CursorLine cterm=none ctermbg=235
+highlight SpecialKey ctermfg=245
 
 augroup insert_highlighting
 autocmd!
