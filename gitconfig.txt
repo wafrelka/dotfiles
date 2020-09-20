@@ -4,8 +4,8 @@
 	email = wafrelka@gmail.com
 	name = wafrelka
 [alias]
-	ln = log --decorate --oneline --stat
-	lg = log --decorate --oneline --graph
+	ln = log --oneline --stat
+	lg = log --oneline --graph
 	wdiff = diff --color-words
 	cdiff = diff --cached
 	cwdiff = diff --cached --color-words
