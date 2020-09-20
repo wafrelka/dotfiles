@@ -149,13 +149,13 @@ esac
 # peco
 
 _peco_history_selection() {
-	BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --rcfile "${HOME}/.dotfiles/peco.json" --query "$LBUFFER" --prompt "history>")"
+	BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
 	CURSOR=$#BUFFER
 	zle redisplay
 }
 
 _peco_file_search() {
-	selected="$(find . | peco --rcfile "${HOME}/.dotfiles/peco.json" --prompt "file>" | tr '\n' ' ')"
+	selected="$(find . | peco --prompt "file>" | tr '\n' ' ')"
 	BUFFER="$LBUFFER$selected$RBUFFER"
 	CURSOR=$#BUFFER
 	zle redisplay
