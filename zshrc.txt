@@ -148,22 +148,44 @@ esac
 
 # peco
 
-_peco_history_selection() {
-	BUFFER="$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
+_rewrite() {
+	BUFFER="$1"
 	CURSOR=$#BUFFER
 	zle redisplay
 }
 
-_peco_file_search() {
-	selected="$(find . | peco --prompt "file>" | tr '\n' ' ')"
-	BUFFER="$LBUFFER$selected$RBUFFER"
+_append() {
+	BUFFER="$LBUFFER$1$RBUFFER"
 	CURSOR=$#BUFFER
 	zle redisplay
+}
+
+_peco_history() {
+	_rewrite "$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
+}
+
+_peco_find() {
+	_append "$(find . | peco --prompt "file>" | tr '\n' ' ')"
+}
+
+_peco_fd() {
+	_append "$(fd . | peco --prompt "file>" | tr '\n' ' ')"
+}
+
+_peco_ls() {
+	_append "$(ls . | peco --prompt "file>" | tr '\n' ' ')"
 }
 
 if which peco > /dev/null; then
-	zle -N _peco_history_selection
-	zle -N _peco_file_search
-	bindkey '^r' _peco_history_selection
-	bindkey '^f' _peco_file_search
+	zle -N _peco_history
+	zle -N _peco_find
+	zle -N _peco_fd
+	zle -N _peco_ls
+	bindkey '^r' _peco_history
+	if which fd > /dev/null; then
+		bindkey '^s' _peco_fd
+	else
+		bindkey '^s' _peco_find
+	fi
+	bindkey '^s^s' _peco_ls
 fi
