@@ -183,9 +183,9 @@ if which peco > /dev/null; then
 	zle -N _peco_ls
 	bindkey '^r' _peco_history
 	if which fd > /dev/null; then
-		bindkey '^s' _peco_fd
+		bindkey '^s^s' _peco_fd
 	else
-		bindkey '^s' _peco_find
+		bindkey '^s^s' _peco_find
 	fi
-	bindkey '^s^s' _peco_ls
+	bindkey '^s' _peco_ls
 fi
