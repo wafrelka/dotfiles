@@ -1,9 +1,19 @@
 # aliases
 
-alias ls='ls -F --color=auto'
-alias la='ls -F --color=auto -A'
-alias ll='ls -F --color=auto -l'
-alias lx='ls -F --color=auto -A -l'
+case "$OSTYPE" in
+	darwin* )
+		alias ls='ls -F -G'
+		alias la='ls -F -A -G'
+		alias ll='ls -F -l -G'
+		alias lx='ls -F -A -l -G'
+		;;
+	* )
+		alias ls='ls -F --color=auto'
+		alias la='ls -F -A --color=auto'
+		alias ll='ls -F -l --color=auto'
+		alias lx='ls -F -A -l --color=auto'
+		;;
+esac
 alias less='less -R --tabs=4'
 alias grep='grep --color=auto'
 alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
