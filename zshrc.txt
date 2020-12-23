@@ -174,12 +174,20 @@ _peco_history() {
 	_rewrite "$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
 }
 
-_peco_find() {
-	_append "$(find . | peco --prompt "file>" | tr '\n' ' ')"
+_peco_find_file() {
+	if (which fd); then
+		_append "$(fd . | peco --prompt "file>" | tr '\n' ' ')"
+	else
+		_append "$(find . | peco --prompt "file>" | tr '\n' ' ')"
+	fi
 }
 
-_peco_fd() {
-	_append "$(fd . | peco --prompt "file>" | tr '\n' ' ')"
+_peco_find_dir() {
+	if (which fd); then
+		_append "$(fd . --type directory | peco --prompt "dir>" | tr '\n' ' ')"
+	else
+		_append "$(find . -type d | peco --prompt "dir>" | tr '\n' ' ')"
+	fi
 }
 
 _peco_ls() {
@@ -188,14 +196,11 @@ _peco_ls() {
 
 if which peco > /dev/null; then
 	zle -N _peco_history
-	zle -N _peco_find
-	zle -N _peco_fd
+	zle -N _peco_find_file
+	zle -N _peco_find_dir
 	zle -N _peco_ls
 	bindkey '^r' _peco_history
-	if which fd > /dev/null; then
-		bindkey '^s^s' _peco_fd
-	else
-		bindkey '^s^s' _peco_find
-	fi
+	bindkey '^s^f' _peco_find_file
+	bindkey '^s^s' _peco_find_dir
 	bindkey '^s' _peco_ls
 fi
