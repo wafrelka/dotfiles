@@ -175,7 +175,7 @@ _peco_history() {
 }
 
 _peco_find_file() {
-	if (which fd); then
+	if (which fd > /dev/null); then
 		_append "$(fd . | peco --prompt "file>" | tr '\n' ' ')"
 	else
 		_append "$(find . | peco --prompt "file>" | tr '\n' ' ')"
@@ -183,7 +183,7 @@ _peco_find_file() {
 }
 
 _peco_find_dir() {
-	if (which fd); then
+	if (which fd > /dev/null); then
 		_append "$(fd . --type directory | peco --prompt "dir>" | tr '\n' ' ')"
 	else
 		_append "$(find . -type d | peco --prompt "dir>" | tr '\n' ' ')"
