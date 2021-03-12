@@ -194,13 +194,26 @@ _peco_ls() {
 	_append "$(ls . | peco --prompt "file>" | tr '\n' ' ')"
 }
 
+_peco_cd() {
+	if (which fd > /dev/null); then
+		d="$(fd . --type directory | peco --prompt "dir>")"
+	else
+		d="$(find . -type d | peco --prompt "dir>")"
+	fi
+	if [ "$d" != "" ]; then
+		_rewrite "cd $(printf %q "$d")"
+	fi
+}
+
 if which peco > /dev/null; then
 	zle -N _peco_history
 	zle -N _peco_find_file
 	zle -N _peco_find_dir
 	zle -N _peco_ls
+	zle -N _peco_cd
 	bindkey '^r' _peco_history
 	bindkey '^s^f' _peco_find_file
 	bindkey '^s^s' _peco_find_dir
 	bindkey '^s' _peco_ls
+	bindkey '^t' _peco_cd
 fi
