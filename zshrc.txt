@@ -77,6 +77,13 @@ bindkey '^r' history-incremental-pattern-search-backward
 bindkey '^s' history-incremental-pattern-search-forward
 
 
+# directory history
+
+autoload -U chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ":chpwd:*" recent-dirs-max 30
+
+
 # other options
 
 setopt autopushd
@@ -195,13 +202,9 @@ _peco_ls() {
 }
 
 _peco_cd() {
-	if (which fd > /dev/null); then
-		d="$(fd . --type directory | peco --prompt "dir>")"
-	else
-		d="$(find . -type d | peco --prompt "dir>")"
-	fi
+	d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | peco --prompt "cd>")"
 	if [ "$d" != "" ]; then
-		_rewrite "cd $(printf %q "$d")"
+		_rewrite "cd $d"
 	fi
 }
 
