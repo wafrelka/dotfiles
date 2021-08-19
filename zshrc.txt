@@ -220,3 +220,13 @@ if which peco > /dev/null; then
 	bindkey '^s' _peco_ls
 	bindkey '^t' _peco_cd
 fi
+
+
+# custom sources
+
+() {
+	local custom_files=("$HOME/."*".zshrc"(N))
+	for f in "${custom_files[@]}"; do
+		source "$f"
+	done
+}
