@@ -129,7 +129,7 @@ _prompt() {
 	ssh_conn="${SSH_CONNECTION}"
 
 	echo -n "\n"
-	echo -n "%F{14}%/%f"
+	echo -n "%F{14}${PWD/#"$HOME\/"/"~/"}%f"
 	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
 	echo -n "\n"
 	echo -n "%F{13}%n%f"
