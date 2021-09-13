@@ -2,6 +2,8 @@
 	default = simple
 [pull]
 	ff = only
+[fetch]
+	prune = true
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
