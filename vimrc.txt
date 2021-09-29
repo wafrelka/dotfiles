@@ -2,6 +2,8 @@ set nocompatible
 set title
 set number
 set cursorline
+set ruler
+set rulerformat=%l,%v
 
 set autoindent
 set smartindent
