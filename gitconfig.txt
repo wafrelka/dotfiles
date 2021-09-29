@@ -4,6 +4,8 @@
 	ff = only
 [fetch]
 	prune = true
+[merge]
+	ff = false
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
