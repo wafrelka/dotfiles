@@ -21,6 +21,7 @@ alias be='bundle exec'
 alias ber='bundle exec ruby'
 alias sourcezshrc='source ~/.zshrc'
 alias unzip932='unzip -O cp932'
+alias pview='view -'
 
 
 # environment variables
