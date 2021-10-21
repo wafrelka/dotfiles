@@ -71,8 +71,6 @@ setopt hist_ignore_dups
 setopt share_history
 setopt hist_ignore_space
 setopt hist_reduce_blanks
-setopt extended_history
-setopt inc_append_history
 
 bindkey '^r' history-incremental-pattern-search-backward
 bindkey '^s' history-incremental-pattern-search-forward
