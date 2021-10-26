@@ -203,7 +203,7 @@ _peco_cd() {
 	fi
 }
 
-if which peco > /dev/null; then
+if (peco --help > /dev/null 2>&1); then
 	zle -N _peco_history
 	zle -N _peco_find
 	zle -N _peco_cd
