@@ -15,5 +15,6 @@
 	wdiff = diff --color-words
 	cdiff = diff --cached
 	cwdiff = diff --cached --color-words
+	ndiff = diff --no-index
 [diff]
 	algorithm = patience
