@@ -12,9 +12,9 @@
 [alias]
 	ln = log --oneline --stat
 	lg = log --oneline --graph
-	wdiff = diff --color-words
+	wdiff = ! cd ${GIT_PREFIX} && git diff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
 	cdiff = diff --cached
-	cwdiff = diff --cached --color-words
+	cwdiff = ! cd ${GIT_PREFIX} && git cdiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
 	ndiff = diff --no-index
 [diff]
 	algorithm = patience
