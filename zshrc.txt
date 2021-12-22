@@ -186,6 +186,7 @@ _append() {
 }
 
 _peco_history() {
+	fc -RI
 	_rewrite "$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
 }
 
