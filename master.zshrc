@@ -23,6 +23,19 @@ alias sourcezshrc='source ~/.zshrc'
 alias unzip932='unzip -O cp932'
 alias pview='view -'
 
+wscode() {
+    local target_dir="${1:-.}"
+    local git_root="$(cd "$target_dir" && git rev-parse --show-toplevel)"
+    local ws_paths=("$git_root/"*".code-workspace"(N))
+    if [ 0 -eq "${#ws_paths[@]}" ]; then
+        printf "cannot find '*.code-workspace' in '%s'\n" "$git_root"
+        return 1
+    fi
+    local ws_path="${ws_paths[1]}"
+    printf "opening '%s'\n" "$ws_path"
+    code "$ws_path"
+}
+
 
 # environment variables
 
