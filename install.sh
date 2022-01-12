@@ -14,6 +14,6 @@ run ln -sf "$here/vimrc.txt" ~/.vimrc
 run ln -sf "$here/zshrc.txt" ~/.zshrc
 
 conf_dir="${XDG_CONFIG_HOME:-$HOME/.config}"
-run mkdir -p "$conf_dir/git" && run ln -sf "$(pwd)/gitconfig.txt" "$conf_dir/git/config"
-run mkdir -p "$conf_dir/git" && run ln -sf "$(pwd)/gitignore.txt" "$conf_dir/git/ignore"
-run mkdir -p "$conf_dir/peco" && run ln -sf "$(pwd)/peco.json" "$conf_dir/peco/config.json"
+run mkdir -p "$conf_dir/git" && run ln -sf "$here/gitconfig.txt" "$conf_dir/git/config"
+run mkdir -p "$conf_dir/git" && run ln -sf "$here/gitignore.txt" "$conf_dir/git/ignore"
+run mkdir -p "$conf_dir/peco" && run ln -sf "$here/peco.json" "$conf_dir/peco/config.json"
