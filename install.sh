@@ -3,11 +3,11 @@
 set -ue
 
 run () {
-	echo "\$ $@"
+	printf "\$ %s\n" "$*"
 	"$@"
 }
 
-here="$(cd $(dirname "$0"); pwd)"
+here="$(cd "$(dirname "$0")"; pwd)"
 
 run ln -sf "$here/tmux.conf.txt" ~/.tmux.conf
 run ln -sf "$here/vimrc.txt" ~/.vimrc
