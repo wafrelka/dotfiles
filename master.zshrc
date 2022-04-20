@@ -193,8 +193,9 @@ _rewrite() {
 }
 
 _append() {
+	local left="$LBUFFER$1"
 	BUFFER="$LBUFFER$1$RBUFFER"
-	CURSOR=$#BUFFER
+	CURSOR=$#left
 	zle redisplay
 }
 
