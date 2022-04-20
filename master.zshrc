@@ -225,7 +225,7 @@ if (peco --help > /dev/null 2>&1); then
 	zle -N _peco_cd
 	bindkey '^r' _peco_history
 	bindkey '^s' _peco_find
-	bindkey '^t' _peco_cd
+	bindkey '^g' _peco_cd
 fi
 
 
