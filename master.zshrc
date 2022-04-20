@@ -219,13 +219,19 @@ _peco_cd() {
 	fi
 }
 
+_peco_git_log() {
+	_append "$(git log --oneline | peco --prompt "commit>" | cut -d " " -f 1)"
+}
+
 if (peco --help > /dev/null 2>&1); then
 	zle -N _peco_history
 	zle -N _peco_find
 	zle -N _peco_cd
+	zle -N _peco_git_log
 	bindkey '^r' _peco_history
 	bindkey '^s' _peco_find
 	bindkey '^g' _peco_cd
+	bindkey '^t' _peco_git_log
 fi
 
 
