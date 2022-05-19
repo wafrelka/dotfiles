@@ -2,18 +2,26 @@
 
 set -ue
 
-run () {
+HERE="$(cd "$(dirname "$0")"; pwd)"
+
+run() {
 	printf "\$ %s\n" "$*"
 	"$@"
 }
 
-here="$(cd "$(dirname "$0")"; pwd)"
+put() {
+	local d="$(dirname "$2")"
+	if [ "$d" != "$HOME" ]; then
+		run mkdir -p "$d"
+	fi
+	run ln -sf "$HERE/$1" "$2"
+}
 
-run ln -sf "$here/tmux.conf" ~/.tmux.conf
-run ln -sf "$here/master.vimrc" ~/.vimrc
-run ln -sf "$here/master.zshrc" ~/.zshrc
+put "tmux.conf" "$HOME/.tmux.conf"
+put "master.vimrc" "$HOME/.vimrc"
+put "master.zshrc" "$HOME/.zshrc"
 
-conf_dir="${XDG_CONFIG_HOME:-$HOME/.config}"
-run mkdir -p "$conf_dir/git" && run ln -sf "$here/master.gitconfig" "$conf_dir/git/config"
-run mkdir -p "$conf_dir/git" && run ln -sf "$here/master.gitignore" "$conf_dir/git/ignore"
-run mkdir -p "$conf_dir/peco" && run ln -sf "$here/peco.json" "$conf_dir/peco/config.json"
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
+put "master.gitconfig" "$CONF/git/config"
+put "master.gitignore" "$CONF/git/ignore"
+put "peco.json" "$CONF/peco/config.json"
