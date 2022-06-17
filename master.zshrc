@@ -138,15 +138,15 @@ _prompt() {
 
 	vcs_info
 
-	vcs_msg="${vcs_info_msg_0_}"
-	ssh_conn="${SSH_CONNECTION}"
+	local vcs_msg="${vcs_info_msg_0_}"
+	local ssh_conn="${SSH_CONNECTION}"
 
 	echo -n "\n"
 	echo -n "%F{14}${PWD/#"$HOME\/"/"~/"}%f"
 	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
 	echo -n "\n"
 	echo -n "%F{13}%n%f"
-	if [ "" != "$ssh_conn" ]; then
+	if [ -n "$ssh_conn" ]; then
 		echo -n "@%F{11}%B%U${(U)HOST%%.*}%u%b%f"
 	fi
 	echo -n " %(?,%F{10},%F{9})%(!,#,$)%f "
@@ -154,14 +154,13 @@ _prompt() {
 
 _rprompt() {
 
-	py_msg=""
+	local py_msg=""
 
-	if [[ -n "$VIRTUAL_ENV" ]]; then
+	if [ -n "$VIRTUAL_ENV" ]; then
 		py_msg="+Py"
 	fi
 
 	echo -n "%F{11}${py_msg}%f"
-
 }
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -213,8 +212,8 @@ _peco_find() {
 }
 
 _peco_cd() {
-	d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | peco --prompt "cd>")"
-	if [ "$d" != "" ]; then
+	local d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | peco --prompt "cd>")"
+	if [ -n "$d" ]; then
 		_rewrite "cd $d"
 	fi
 }
