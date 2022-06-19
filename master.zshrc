@@ -169,19 +169,19 @@ RPROMPT='$(_rprompt)'
 
 # terminal title
 
-case "${TERM}" in
-kterm*|xterm*)
-    if [ -n "${KITTY_WINDOW_IDS:-}" ]; then
-        _update_term_title() {
-            echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
-        }
-    else
-        _update_term_title() {
-            echo -ne "\033]0;$(basename $PWD)\007"
-        }
-    fi
-    add-zsh-hook precmd _update_term_title
-esac
+_update_term_title() {
+	local title
+	if [ -n "$KITTY_WINDOW_IDS" ]; then
+		title="${USER}@${HOST%%.*}:$PWD"
+	else
+		title="$(basename "$PWD")"
+	fi
+	echo -ne "\033]0;$title\007"
+}
+
+if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
+	add-zsh-hook precmd _update_term_title
+fi
 
 # peco
 
