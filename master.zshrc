@@ -23,8 +23,34 @@ alias pp='vim -R -'
 
 alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
 
-alias be='bundle exec'
-alias ber='bundle exec ruby'
+with_poetry() {
+	if ([ -f "$1" ] && [ "${1##*.}" = "py" ]) || [ "$1" = "-m" ]; then
+		poetry run python3 "$@"
+	else
+		poetry run "$@"
+	fi
+}
+
+with_bundle() {
+	if [ -f "$1" ] && [ "${1##*.}" = "rb" ]; then
+		bundle exec ruby "$@"
+	else
+		bundle exec "$@"
+	fi
+}
+
+with() {
+	if (bundle exec pwd >/dev/null 2>&1); then
+		with_bundle "$@"
+		return
+	fi
+	if (poetry run pwd >/dev/null 2>&1); then
+		with_poetry "$@"
+		return
+	fi
+	echo "cannot detect environment" >&2
+	return 1
+}
 
 wscode() {
     local target_dir="${1:-.}"
