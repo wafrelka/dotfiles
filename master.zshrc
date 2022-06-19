@@ -136,17 +136,14 @@ zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
 
 _prompt() {
 
-	vcs_info
-
 	local vcs_msg="${vcs_info_msg_0_}"
-	local ssh_conn="${SSH_CONNECTION}"
 
 	echo -n "\n"
 	echo -n "%F{14}${PWD/#"$HOME\/"/"~/"}%f"
 	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
 	echo -n "\n"
 	echo -n "%F{13}%n%f"
-	if [ -n "$ssh_conn" ]; then
+	if [ -n "$SSH_CONNECTION" ]; then
 		echo -n "@%F{11}%B%U${(U)HOST%%.*}%u%b%f"
 	fi
 	echo -n " %(?,%F{10},%F{9})%(!,#,$)%f "
@@ -166,6 +163,7 @@ _rprompt() {
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 PROMPT='$(_prompt)'
 RPROMPT='$(_rprompt)'
+add-zsh-hook precmd vcs_info
 
 # terminal title
 
