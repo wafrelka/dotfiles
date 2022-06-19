@@ -19,7 +19,6 @@ alias less='less -R --tabs=4'
 alias grep='grep --color=auto'
 alias unzip932='unzip -O cp932'
 alias pview='view -'
-alias sourcezshrc='source ~/.zshrc'
 
 alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
 
