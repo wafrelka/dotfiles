@@ -149,20 +149,8 @@ _prompt() {
 	echo -n " %(?,%F{10},%F{9})%(!,#,$)%f "
 }
 
-_rprompt() {
-
-	local py_msg=""
-
-	if [ -n "$VIRTUAL_ENV" ]; then
-		py_msg="+Py"
-	fi
-
-	echo -n "%F{11}${py_msg}%f"
-}
-
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 PROMPT='$(_prompt)'
-RPROMPT='$(_rprompt)'
 add-zsh-hook precmd vcs_info
 
 # terminal title
