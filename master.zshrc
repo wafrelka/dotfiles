@@ -14,14 +14,17 @@ case "$OSTYPE" in
 		alias lx='ls -F -A -l --color=auto'
 		;;
 esac
+
 alias less='less -R --tabs=4'
 alias grep='grep --color=auto'
-alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
-alias be='bundle exec'
-alias ber='bundle exec ruby'
-alias sourcezshrc='source ~/.zshrc'
 alias unzip932='unzip -O cp932'
 alias pview='view -'
+alias sourcezshrc='source ~/.zshrc'
+
+alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
+
+alias be='bundle exec'
+alias ber='bundle exec ruby'
 
 wscode() {
     local target_dir="${1:-.}"
