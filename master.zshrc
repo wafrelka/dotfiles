@@ -171,8 +171,8 @@ RPROMPT='$(_rprompt)'
 
 _update_term_title() {
 	local title
-	if [ -n "$KITTY_WINDOW_IDS" ]; then
-		title="${USER}@${HOST%%.*}:$PWD"
+	if [ -n "$SSH_CONNECTION" ]; then
+		title="${(U)HOST%%.*}:$(basename "$PWD")"
 	else
 		title="$(basename "$PWD")"
 	fi
