@@ -21,3 +21,4 @@
 	algorithm = histogram
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+	insteadOf = gh:
