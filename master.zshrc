@@ -24,7 +24,9 @@ alias pp='vim -R -'
 alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
 
 with_poetry() {
-	if ([ -f "$1" ] && [ "${1##*.}" = "py" ]) || [ "$1" = "-m" ]; then
+	if [ "$#" -eq 0 ]; then
+		poetry run python
+	elif ([ -f "$1" ] && [ "${1##*.}" = "py" ]) || [ "$1" = "-m" ]; then
 		poetry run python3 "$@"
 	else
 		poetry run "$@"
@@ -32,7 +34,9 @@ with_poetry() {
 }
 
 with_bundle() {
-	if [ -f "$1" ] && [ "${1##*.}" = "rb" ]; then
+	if [ "$#" -eq 0 ]; then
+		bundle exec irb
+	elif [ -f "$1" ] && [ "${1##*.}" = "rb" ]; then
 		bundle exec ruby "$@"
 	else
 		bundle exec "$@"
