@@ -70,7 +70,7 @@ wscode() {
 
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
-export WORDCHARS="$(echo "$WORDCHARS" | sed s:/::g)"
+export WORDCHARS="${WORDCHARS//\//}"
 
 
 # auto completion
@@ -167,15 +167,27 @@ _prompt() {
 
 	local vcs_msg="${vcs_info_msg_0_}"
 
-	echo -n "\n"
-	echo -n "%F{14}${PWD/#"$HOME\/"/"~/"}%f"
-	echo -n "${vcs_msg:+ | }%F{10}${vcs_msg}%f"
-	echo -n "\n"
-	echo -n "%F{13}%n%f"
+	local content=()
+
+	content+=""
+
+	content+="%F{14}${PWD/#$HOME\//~/}%f"
+	content+="${vcs_msg:+ | }%F{10}${vcs_msg}%f"
+	content+=""
+
+	content+="%F{13}%n%f"
 	if [ -n "$SSH_CONNECTION" ]; then
-		echo -n "@%F{11}%B%U${(U)HOST%%.*}%u%b%f"
+		content+="@%F{11}%B%U${(U)HOST%%.*}%u%b%f"
 	fi
-	echo -n " %(?,%F{10},%F{9})%(!,#,$)%f "
+	content+=" %(?,%F{10},%F{9})%(!,#,$)%f "
+
+	for item in "${content[@]}"; do
+		if [ -z "$item" ]; then
+			printf "\n"
+		else
+			printf "%s" "$item"
+		fi
+	done
 }
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
