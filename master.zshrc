@@ -150,8 +150,8 @@ setopt notify
 setopt prompt_subst
 autoload -Uz add-zsh-hook
 bindkey -e
-bindkey ";2C" forward-word
-bindkey ";2D" backward-word
+bindkey "^f" forward-word
+bindkey "^b" backward-word
 
 
 # VCS
