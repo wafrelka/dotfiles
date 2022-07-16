@@ -31,8 +31,6 @@ alias unzip932='unzip -O cp932'
 alias p='vim -R'
 alias pp='vim -R -'
 
-alias gxx='g++ --std=c++11 -O2 -Wall -Wextra -Wshadow -Wno-unused-result -fsanitize=undefined,address -DWAFDAYO'
-
 with_poetry() {
 	if [ "$#" -eq 0 ]; then
 		poetry run python
