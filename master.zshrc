@@ -66,16 +66,24 @@ with() {
 }
 
 wscode() {
-    local target_dir="${1:-.}"
-    local git_root="$(cd "$target_dir" && git rev-parse --show-toplevel)"
-    local ws_paths=("$git_root/"*".code-workspace"(N))
-    if [ 0 -eq "${#ws_paths[@]}" ]; then
-        printf "cannot find '*.code-workspace' in '%s'\n" "$git_root"
-        return 1
-    fi
-    local ws_path="${ws_paths[1]}"
-    printf "opening '%s'\n" "$ws_path"
-    code "$ws_path"
+	local dir="$(pwd)"
+	local ws_file=""
+	while true; do
+		local ws_files=("$dir/"*".code-workspace"(.N[1,1]))
+		if [ "${#ws_files[@]}" -eq 1 ]; then
+			ws_file="${ws_files[1]}"
+			break
+		fi
+		parent="$(dirname "$dir")"
+		if [ "$parent" = "$dir" ]; then
+			break
+		fi
+		dir="$parent"
+	done
+	if [ -n "$ws_file" ]; then
+		echo "opening '$ws_file'"
+		code "$ws_file"
+	fi
 }
 
 
