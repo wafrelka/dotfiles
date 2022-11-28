@@ -65,7 +65,7 @@ with() {
 	return 1
 }
 
-wscode() {
+code-workspace() {
 	local dir="$(pwd)"
 	local ws_file=""
 	while true; do
