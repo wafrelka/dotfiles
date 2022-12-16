@@ -28,9 +28,14 @@ esac
 alias less='less -R --tabs=4'
 alias grep='grep --color=auto'
 alias unzip932='unzip -O cp932'
-alias v='vim -R'
-alias p='vim -R -'
-alias c='code'
+
+see() {
+	if [ "$#" -eq 0 ]; then
+		vim -R -
+	else
+		vim -R "$@"
+	fi
+}
 
 run-poetry() {
 	if [ "$#" -eq 0 ]; then
