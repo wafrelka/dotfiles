@@ -61,7 +61,7 @@ run() {
 		run-poetry "$@"
 		return
 	fi
-	echo "cannot detect environment" >&2
+	echo "error: cannot detect environment" >&2
 	return 1
 }
 
