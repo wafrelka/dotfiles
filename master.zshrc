@@ -269,7 +269,7 @@ _peco_find() {
 	if (fd --help > /dev/null 2>&1); then
 		_append "$(fd . --type directory --type file | peco --prompt "file>" | tr '\n' ' ')"
 	else
-		_append "$(find . -type d -or -type f | peco --prompt "file>" | tr '\n' ' ')"
+		_append "$(find . -not -path '*/.*' \( -type d -or -type f \) | peco --prompt "file>" | tr '\n' ' ')"
 	fi
 }
 
