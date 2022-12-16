@@ -32,7 +32,7 @@ alias v='vim -R'
 alias p='vim -R -'
 alias c='code'
 
-with_poetry() {
+run-poetry() {
 	if [ "$#" -eq 0 ]; then
 		poetry run python
 	elif ([ -f "$1" ] && [ "${1##*.}" = "py" ]) || [ "$1" = "-m" ]; then
@@ -42,7 +42,7 @@ with_poetry() {
 	fi
 }
 
-with_bundle() {
+run-bundle() {
 	if [ "$#" -eq 0 ]; then
 		bundle exec irb
 	elif [ -f "$1" ] && [ "${1##*.}" = "rb" ]; then
@@ -52,13 +52,13 @@ with_bundle() {
 	fi
 }
 
-with() {
+run() {
 	if (bundle exec pwd >/dev/null 2>&1); then
-		with_bundle "$@"
+		run-bundle "$@"
 		return
 	fi
 	if (poetry run pwd >/dev/null 2>&1); then
-		with_poetry "$@"
+		run-poetry "$@"
 		return
 	fi
 	echo "cannot detect environment" >&2
