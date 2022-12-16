@@ -81,8 +81,16 @@ code-workspace() {
 		dir="$parent"
 	done
 	if [ -n "$ws_file" ]; then
-		echo "opening '$ws_file'"
+		echo "opening workspace '$ws_file'"
 		code "$ws_file"
+		return
+	else
+		local gitroot="$(git rev-parse --show-toplevel 2>/dev/null)"
+		if [ -n "$gitroot" ]; then
+			echo "opening git root '$gitroot'"
+			code "$gitroot"
+			return
+		fi
 	fi
 }
 
