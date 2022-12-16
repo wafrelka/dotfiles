@@ -281,7 +281,7 @@ _peco_cd() {
 }
 
 _peco_git_log() {
-	_append "$(git log --oneline | peco --prompt "commit>" | cut -d " " -f 1)"
+	_append "$(git log --oneline --decorate | peco --prompt "commit>" | cut -d " " -f 1)"
 }
 
 if (peco --help > /dev/null 2>&1); then
