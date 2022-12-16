@@ -92,6 +92,8 @@ code-workspace() {
 			return
 		fi
 	fi
+	echo "error: cannot find workspace or git root" >&2
+	return 1
 }
 
 
