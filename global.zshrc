@@ -37,39 +37,6 @@ see() {
 	fi
 }
 
-run-poetry() {
-	if [ "$#" -eq 0 ]; then
-		poetry run python
-	elif ([ -f "$1" ] && [ "${1##*.}" = "py" ]) || [ "$1" = "-m" ]; then
-		poetry run python3 "$@"
-	else
-		poetry run "$@"
-	fi
-}
-
-run-bundle() {
-	if [ "$#" -eq 0 ]; then
-		bundle exec irb
-	elif [ -f "$1" ] && [ "${1##*.}" = "rb" ]; then
-		bundle exec ruby "$@"
-	else
-		bundle exec "$@"
-	fi
-}
-
-run() {
-	if (bundle exec pwd >/dev/null 2>&1); then
-		run-bundle "$@"
-		return
-	fi
-	if (poetry run pwd >/dev/null 2>&1); then
-		run-poetry "$@"
-		return
-	fi
-	echo "error: cannot detect environment" >&2
-	return 1
-}
-
 code-workspace() {
 	local dir="$(pwd)"
 	local ws_file=""
