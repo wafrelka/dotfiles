@@ -18,10 +18,10 @@ put() {
 }
 
 put "tmux.conf" "$HOME/.tmux.conf"
-put "master.vimrc" "$HOME/.vimrc"
-put "master.zshrc" "$HOME/.zshrc"
+put "global.vimrc" "$HOME/.vimrc"
+put "global.zshrc" "$HOME/.zshrc"
 
 CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
-put "master.gitconfig" "$CONF/git/config"
-put "master.gitignore" "$CONF/git/ignore"
+put "global.gitconfig" "$CONF/git/config"
+put "global.gitignore" "$CONF/git/ignore"
 put "peco.json" "$CONF/peco/config.json"
