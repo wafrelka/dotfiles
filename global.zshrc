@@ -117,7 +117,7 @@ add-zsh-hook chpwd chpwd_recent_dirs
 setopt autopushd
 setopt pushd_ignore_dups
 
-zstyle ':chpwd:*' recent-dirs-max 30
+zstyle ':chpwd:*' recent-dirs-max 40
 zstyle ':chpwd:*' recent-dirs-file "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/recent-dirs"
 
 mkdir -p "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh"
