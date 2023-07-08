@@ -3,7 +3,7 @@
 set -ue
 
 HERE="$(cd "$(dirname "$0")"; pwd)"
-CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 copy=""
 
@@ -35,6 +35,6 @@ put "tmux.conf" "$HOME/.tmux.conf"
 put "global.vimrc" "$HOME/.vimrc"
 put "global.zshrc" "$HOME/.zshrc"
 
-put "global.gitconfig" "$CONF/git/config"
-put "global.gitignore" "$CONF/git/ignore"
-put "peco.json" "$CONF/peco/config.json"
+put "global.gitconfig" "$CONFIG/git/config"
+put "global.gitignore" "$CONFIG/git/ignore"
+put "peco.json" "$CONFIG/peco/config.json"
