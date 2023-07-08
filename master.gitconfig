@@ -19,5 +19,3 @@
 	nwdiff = ! cd ${GIT_PREFIX} && git ndiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
 [diff]
 	algorithm = histogram
-[url "ssh://git@github.com/"]
-	insteadOf = gh:
