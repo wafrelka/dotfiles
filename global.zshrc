@@ -54,6 +54,22 @@ code-workspace() {
 	return 1
 }
 
+sleep-until() {
+	if [ "$#" -ne 1 ]; then
+		echo "usage: $0 <deadline>" >&2
+		return 1
+	fi
+	local next now delta
+	next="$(date -f - +%s <<< "$1")"
+	now="$(date +%s)"
+	delta="$(expr "$next" - "$now")"
+	if [ 0 -gt "$delta" ]; then
+		delta="$(expr "$delta" + 86400)"
+	fi
+	printf "sleep for %d seconds\n" "$delta"
+	sleep -- "$delta"
+}
+
 
 ### environment variables
 
