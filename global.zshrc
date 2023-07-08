@@ -94,7 +94,9 @@ zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31'
 
 ### command history
 
-HISTFILE=~/.zsh_history
+HISTFILE="${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/history"
+mkdir -p "$(dirname "$HISTFILE")"
+
 HISTSIZE=1000000
 SAVEHIST=1000000
 
@@ -116,6 +118,9 @@ setopt autopushd
 setopt pushd_ignore_dups
 
 zstyle ':chpwd:*' recent-dirs-max 30
+zstyle ':chpwd:*' recent-dirs-file "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/recent-dirs"
+
+mkdir -p "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh"
 
 
 ### other options
