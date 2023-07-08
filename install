@@ -3,6 +3,16 @@
 set -ue
 
 HERE="$(cd "$(dirname "$0")"; pwd)"
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+copy=""
+
+while [ "$#" -ne 0 ]; do
+	case "$1" in
+		"-c" | "--copy" ) copy="1"; shift 1;;
+		* ) printf "usage: %s [--copy]" "$0" >&2; exit 1;;
+	esac
+done
 
 run() {
 	printf "\$ %s\n" "$*"
@@ -14,14 +24,17 @@ put() {
 	if [ "$d" != "$HOME" ]; then
 		run mkdir -p "$d"
 	fi
-	run ln -sf "$HERE/$1" "$2"
+	if [ -n "$copy" ]; then
+		run cp --remove-destination "$HERE/$1" "$2"
+	else
+		run ln -sf "$HERE/$1" "$2"
+	fi
 }
 
 put "tmux.conf" "$HOME/.tmux.conf"
 put "global.vimrc" "$HOME/.vimrc"
 put "global.zshrc" "$HOME/.zshrc"
 
-CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
 put "global.gitconfig" "$CONF/git/config"
 put "global.gitignore" "$CONF/git/ignore"
 put "peco.json" "$CONF/peco/config.json"
