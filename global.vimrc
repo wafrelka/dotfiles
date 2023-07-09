@@ -20,11 +20,21 @@ set listchars=tab:»\ ,trail:·
 set timeoutlen=100
 
 syntax on
-colorscheme elflord
-highlight LineNr ctermbg=0 ctermfg=7
-highlight CursorLineNr cterm=none ctermbg=240 ctermfg=7
-highlight CursorLine cterm=none ctermbg=236
-highlight SpecialKey ctermfg=245
+
+if v:version >= 900
+    colorscheme slate
+    highlight Normal ctermbg=none
+    highlight LineNr ctermbg=0 ctermfg=7
+    highlight CursorLineNr cterm=none ctermbg=240 ctermfg=7
+    highlight CursorLine cterm=none ctermbg=236
+    highlight SpecialKey ctermfg=245
+else
+    colorscheme elflord
+    highlight LineNr ctermbg=0 ctermfg=7
+    highlight CursorLineNr cterm=none ctermbg=240 ctermfg=7
+    highlight CursorLine cterm=none ctermbg=236
+    highlight SpecialKey ctermfg=245
+endif
 
 augroup insert_highlighting
 autocmd!
