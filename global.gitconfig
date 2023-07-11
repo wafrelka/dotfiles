@@ -18,5 +18,6 @@
 	cwdiff = ! cd ${GIT_PREFIX} && git cdiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
 	ndiff = diff --no-index
 	nwdiff = ! cd ${GIT_PREFIX} && git ndiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
+	dirty = clean -ndX
 [diff]
 	algorithm = histogram
