@@ -1,3 +1,13 @@
+### custom sources
+
+() {
+	local files=("$HOME/."*".zshrc"(N))
+	for f in "${files[@]}"; do
+		source "$f"
+	done
+}
+
+
 ### aliases
 
 () {
@@ -271,13 +281,3 @@ if (peco --help > /dev/null 2>&1); then
 	bindkey '^g' __peco_cd
 	bindkey '^t' __peco_git_log
 fi
-
-
-### custom sources
-
-() {
-	local files=("$HOME/."*".zshrc"(N))
-	for f in "${files[@]}"; do
-		source "$f"
-	done
-}
