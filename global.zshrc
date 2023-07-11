@@ -199,6 +199,9 @@ __prompt() {
 	if [ -n "${vcs_msg}" ]; then
 		content+=" | %F{10}${vcs_msg}%f"
 	fi
+	if [ -n "${__PROMPT_STATUS_EXTRA}" ]; then
+		content+="${__PROMPT_STATUS_EXTRA}"
+	fi
 	content+=$'\n'
 
 	content+="%F{13}%n%f"
