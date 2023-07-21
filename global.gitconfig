@@ -6,7 +6,6 @@
 	prune = true
 [merge]
 	ff = false
-	conflictStyle = zdiff3
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
