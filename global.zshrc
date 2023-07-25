@@ -232,7 +232,10 @@ if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 fi
 
 
-### peco
+### fuzzy finder
+
+export FZF_DEFAULT_OPTS="--cycle --reverse --info=inline-right --no-scrollbar \
+--color=dark,gutter:-1,bg+:5,marker:2 --pointer="$'\U200b'" --marker=*\ "
 
 __rewrite_buffer() {
 	BUFFER="$1"
@@ -247,42 +250,58 @@ __append_to_buffer() {
 	zle redisplay
 }
 
-__peco_history() {
-	fc -RI
-	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | peco --query "$LBUFFER" --prompt "history>")"
+__fuzzy() {
+	if (fzf --help > /dev/null 2>&1); then
+		fzf "$@"
+	elif (peco --help > /dev/null 2>&1); then
+		peco "$@"
+	fi
 }
 
-__peco_find() {
+__fuzzy_multi() {
+	if (fzf --help > /dev/null 2>&1); then
+		fzf -m "$@"
+	elif (peco --help > /dev/null 2>&1); then
+		peco "$@"
+	fi
+}
+
+__fuzzy_history() {
+	fc -RI
+	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | __fuzzy --query "$LBUFFER")"
+}
+
+__fuzzy_find() {
 	local find
 	if (fd --help > /dev/null 2>&1); then
 		find=(fd . --type directory --type file)
 	else
 		find=(find . -not -path '*/.*' \( -type d -or -type f \))
 	fi
-	__append_to_buffer "$("${find[@]}" | peco --prompt "file>" | tr '\n' ' ')"
+	__append_to_buffer "$("${find[@]}" | __fuzzy_multi | tr '\n' ' ')"
 }
 
-__peco_cd() {
+__fuzzy_cd() {
 	local d
-	d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | peco --prompt "cd>")"
+	d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | __fuzzy)"
 	if [ -n "$d" ]; then
 		__rewrite_buffer "cd $d"
 	fi
 }
 
-__peco_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | peco --prompt "commit>" | cut -d " " -f 1)"
+__fuzzy_git_log() {
+	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi | cut -d " " -f 1)"
 }
 
-if (peco --help > /dev/null 2>&1); then
-	zle -N __peco_history
-	zle -N __peco_find
-	zle -N __peco_cd
-	zle -N __peco_git_log
-	bindkey '^r' __peco_history
-	bindkey '^s' __peco_find
-	bindkey '^g' __peco_cd
-	bindkey '^t' __peco_git_log
+if (fzf --help > /dev/null 2>&1) || (peco --help > /dev/null 2>&1); then
+	zle -N __fuzzy_history
+	zle -N __fuzzy_find
+	zle -N __fuzzy_cd
+	zle -N __fuzzy_git_log
+	bindkey '^r' __fuzzy_history
+	bindkey '^s' __fuzzy_find
+	bindkey '^g' __fuzzy_cd
+	bindkey '^t' __fuzzy_git_log
 fi
 
 ### custom sources
