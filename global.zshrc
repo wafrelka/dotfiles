@@ -235,7 +235,8 @@ fi
 ### fuzzy finder
 
 export FZF_DEFAULT_OPTS="--cycle --reverse --info=inline-right --no-scrollbar \
---color=dark,gutter:-1,bg+:5,marker:2 --pointer="$'\U200b'" --marker=*\ "
+--color=dark,gutter:-1,fg+:5:underline,bg+:-1,hl:12,hl+:12:underline,pointer:13:bold,marker:14 \
+--pointer=❯ --marker=⟫"
 
 __rewrite_buffer() {
 	BUFFER="$1"
