@@ -36,9 +36,9 @@ highlight SpecialKey ctermfg=245
 augroup insert_highlighting
 autocmd!
 autocmd InsertEnter * highlight CursorLineNr ctermbg=5 ctermfg=7
-autocmd InsertEnter * highlight CursorLine ctermbg=238
+autocmd InsertEnter * highlight CursorLine ctermbg=237
 autocmd InsertLeave * highlight CursorLineNr ctermbg=240 ctermfg=7
-autocmd InsertLeave * highlight CursorLine ctermbg=236
+autocmd InsertLeave * highlight CursorLine ctermbg=235
 augroup END
 
 set fileencodings=utf-8,cp932,euc-jp,latin1
