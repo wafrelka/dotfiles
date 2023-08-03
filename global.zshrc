@@ -267,6 +267,14 @@ __fuzzy_multi() {
 	fi
 }
 
+__fuzzy_multi_sorted() {
+	if (fzf --help > /dev/null 2>&1); then
+		fzf -m --sort "$@"
+	elif (peco --help > /dev/null 2>&1); then
+		sort | peco "$@"
+	fi
+}
+
 __fuzzy_history() {
 	fc -RI
 	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | __fuzzy --query "$LBUFFER")"
@@ -279,7 +287,7 @@ __fuzzy_find() {
 	else
 		find=(find . -not -path '*/.*' \( -type d -or -type f \))
 	fi
-	__append_to_buffer "$("${find[@]}" | __fuzzy_multi | tr '\n' ' ')"
+	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted | tr '\n' ' ')"
 }
 
 __fuzzy_cd() {
