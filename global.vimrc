@@ -30,7 +30,7 @@ endif
 highlight Normal ctermbg=none
 highlight LineNr ctermbg=0 ctermfg=240
 highlight CursorLineNr cterm=none ctermbg=240 ctermfg=7
-highlight CursorLine cterm=none ctermbg=236
+highlight CursorLine cterm=none ctermbg=235
 highlight SpecialKey ctermfg=245
 
 augroup insert_highlighting
