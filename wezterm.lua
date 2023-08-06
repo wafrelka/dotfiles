@@ -68,19 +68,6 @@ wezterm.on('format-tab-title', format_tab_title)
 
 -- config --
 
-local keys = {
-	{
-		key = 'LeftArrow',
-		mods = 'CTRL',
-		action = act { ActivateTabRelative = -1 },
-	},
-	{
-		key = 'RightArrow',
-		mods = 'CTRL',
-		action = act { ActivateTabRelative = 1 },
-	},
-}
-
 local mouse_bindings = {
 	{
 		event = { Up = { streak = 1, button = 'Left' } },
@@ -107,7 +94,6 @@ local config = {
 	cursor_blink_rate = 500,
 	initial_cols = 120,
 	initial_rows = 40,
-	keys = keys,
 	mouse_bindings = mouse_bindings,
 }
 
