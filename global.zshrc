@@ -214,7 +214,7 @@ __prompt() {
 }
 
 
-### terminal title
+### operating system command
 
 __update_term_title() {
 	local title
@@ -226,9 +226,15 @@ __update_term_title() {
 	printf "\033]0;%s\007" "$title"
 }
 
+__update_workdir() {
+	printf "\033]7;file://%s/%s\033\\" "${HOST}" "${PWD}"
+}
+
 if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 	autoload -Uz add-zsh-hook
 	add-zsh-hook precmd __update_term_title
+	add-zsh-hook chpwd __update_workdir
+	__update_workdir
 fi
 
 
