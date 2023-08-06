@@ -218,7 +218,9 @@ __prompt() {
 
 __update_term_title() {
 	local title
-	if [ -n "$SSH_CONNECTION" ]; then
+	if [ $# -gt 0 ]; then
+		title="$1"
+	elif [ -n "$SSH_CONNECTION" ]; then
 		title="${(U)HOST%%.*}:$(basename "$PWD")"
 	else
 		title="$(basename "$PWD")"
@@ -234,6 +236,7 @@ if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 	autoload -Uz add-zsh-hook
 	add-zsh-hook precmd __update_term_title
 	add-zsh-hook chpwd __update_workdir
+	__update_term_title ""
 	__update_workdir
 fi
 
