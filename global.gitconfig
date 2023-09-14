@@ -12,11 +12,11 @@
 [alias]
 	ln = log --oneline --stat
 	lg = log --oneline --graph
-	wdiff = ! cd ${GIT_PREFIX} && git diff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
+	wdiff = ! cd ${GIT_PREFIX:-.} && git diff --color-words="[^\\x80-\\xbf][\\x80-\\xbf]*"
 	cdiff = diff --cached
-	cwdiff = ! cd ${GIT_PREFIX} && git cdiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
+	cwdiff = ! cd ${GIT_PREFIX:-.} && git cdiff --color-words="[^\\x80-\\xbf][\\x80-\\xbf]*"
 	ndiff = diff --no-index
-	nwdiff = ! cd ${GIT_PREFIX} && git ndiff --color-words=$'[^\\x80-\\xbf][\\x80-\\xbf]*'
+	nwdiff = ! cd ${GIT_PREFIX:-.} && git ndiff --color-words="[^\\x80-\\xbf][\\x80-\\xbf]*"
 	dirty = clean -ndX
 [diff]
 	algorithm = histogram
