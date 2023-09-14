@@ -263,24 +263,18 @@ __append_to_buffer() {
 __fuzzy() {
 	if (fzf --help > /dev/null 2>&1); then
 		fzf "$@"
-	elif (peco --help > /dev/null 2>&1); then
-		peco "$@"
 	fi
 }
 
 __fuzzy_multi() {
 	if (fzf --help > /dev/null 2>&1); then
 		fzf -m "$@"
-	elif (peco --help > /dev/null 2>&1); then
-		peco "$@"
 	fi
 }
 
 __fuzzy_multi_sorted() {
 	if (fzf --help > /dev/null 2>&1); then
 		fzf -m --sort "$@"
-	elif (peco --help > /dev/null 2>&1); then
-		sort | peco "$@"
 	fi
 }
 
@@ -311,7 +305,7 @@ __fuzzy_git_log() {
 	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi | cut -d " " -f 1)"
 }
 
-if (fzf --help > /dev/null 2>&1) || (peco --help > /dev/null 2>&1); then
+if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_history
 	zle -N __fuzzy_find
 	zle -N __fuzzy_cd
