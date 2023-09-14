@@ -1,7 +1,7 @@
 ### custom sources
 
 () {
-	local files=("$HOME/."*"-pre.zshrc"(N))
+	local files=("$HOME/.pre.zshrc"(N))
 	for f in "${files[@]}"; do
 		source "$f"
 	done
@@ -325,7 +325,7 @@ fi
 ### custom sources
 
 () {
-	local files=("$HOME/."*"-post.zshrc"(N))
+	local files=("$HOME/.post.zshrc"(N))
 	for f in "${files[@]}"; do
 		source "$f"
 	done
