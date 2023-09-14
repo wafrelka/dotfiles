@@ -197,7 +197,7 @@ __prompt() {
 
 	content+="%F{14}${dir}%f"
 	if [ -n "${vcs_msg}" ]; then
-		content+=" | %F{10}${vcs_msg}%f"
+		content+=" on %F{10}${vcs_msg}%f"
 	fi
 	if [ -n "${__PROMPT_STATUS_EXTRA}" ]; then
 		content+="${__PROMPT_STATUS_EXTRA}"
