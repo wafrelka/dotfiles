@@ -229,7 +229,9 @@ __update_term_title() {
 }
 
 __update_workdir() {
-	printf "\033]7;file://%s/%s\033\\" "${HOST}" "${PWD}"
+	if [ -z "${SSH_CONNECTION}" ]; then
+		printf "\033]7;file://%s/%s\033\\" "${HOST}" "${PWD}"
+	fi
 }
 
 if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
