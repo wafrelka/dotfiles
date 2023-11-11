@@ -10,6 +10,7 @@
 	email = wafrelka@gmail.com
 	name = wafrelka
 [alias]
+	logx = log --stat
 	lg = log --oneline --graph
 	wdiff = ! cd ${GIT_PREFIX:-.} && git diff --color-words="[^\\x80-\\xbf][\\x80-\\xbf]*"
 	cdiff = diff --cached
