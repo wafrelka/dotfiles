@@ -304,7 +304,7 @@ __fuzzy_cd() {
 }
 
 __fuzzy_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi | cut -d " " -f 1)"
+	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
 }
 
 if (fzf --help > /dev/null 2>&1); then
