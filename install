@@ -20,9 +20,9 @@ run() {
 }
 
 put() {
-	local d="$(dirname "$2")"
-	if [ "$d" != "$HOME" ]; then
-		run mkdir -p "$d"
+	parent="$(dirname "$2")"
+	if [ "$parent" != "$HOME" ]; then
+		run mkdir -p "$parent"
 	fi
 	if [ -n "$copy" ]; then
 		run cp --remove-destination "$HERE/$1" "$2"
