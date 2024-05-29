@@ -100,6 +100,7 @@ local config = {
 	initial_cols = 120,
 	initial_rows = 40,
 	mouse_bindings = mouse_bindings,
+	audible_bell = "Disabled",
 }
 
 -- site specific config
