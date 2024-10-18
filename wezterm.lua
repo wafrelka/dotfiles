@@ -72,7 +72,7 @@ local mouse_bindings = {
 	{
 		event = { Up = { streak = 1, button = 'Left' } },
 		mods = 'NONE',
-		action = act.CompleteSelection "ClipboardAndPrimarySelection",
+		action = act.DisableDefaultAssignment,
 	},
 	{
 		event = { Up = { streak = 1, button = 'Left' } },
