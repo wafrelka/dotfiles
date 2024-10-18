@@ -108,7 +108,7 @@ local config = {
 local status, update_config = pcall(require, 'local')
 if status then
 	config = update_config(config)
-else	
+else
 	wezterm.log_info("could not load local config")
 end
 
