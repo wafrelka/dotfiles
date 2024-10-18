@@ -76,11 +76,6 @@ local mouse_bindings = {
 	},
 	{
 		event = { Up = { streak = 1, button = 'Left' } },
-		mods = 'SUPER',
-		action = act.CompleteSelectionOrOpenLinkAtMouseCursor "ClipboardAndPrimarySelection",
-	},
-	{
-		event = { Up = { streak = 1, button = 'Left' } },
 		mods = 'CTRL',
 		action = act.CompleteSelectionOrOpenLinkAtMouseCursor "ClipboardAndPrimarySelection",
 	},
