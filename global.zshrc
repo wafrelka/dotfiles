@@ -1,13 +1,3 @@
-### custom sources
-
-() {
-	local files=("$HOME/.pre.zshrc"(N))
-	for f in "${files[@]}"; do
-		source "$f"
-	done
-}
-
-
 ### aliases
 
 () {
@@ -301,12 +291,3 @@ if (fzf --help > /dev/null 2>&1); then
 	bindkey '^g' __fuzzy_cd
 	bindkey '^t' __fuzzy_git_log
 fi
-
-### custom sources
-
-() {
-	local files=("$HOME/.post.zshrc"(N))
-	for f in "${files[@]}"; do
-		source "$f"
-	done
-}
