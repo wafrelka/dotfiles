@@ -291,3 +291,13 @@ if (fzf --help > /dev/null 2>&1); then
 	bindkey '^g' __fuzzy_cd
 	bindkey '^t' __fuzzy_git_log
 fi
+
+
+### site-specific zshrc
+
+() {
+	local files=("${ZDOTDIR:-"${HOME}"}/.site.zshrc"(N))
+	for f in "${files[@]}"; do
+		source "$f"
+	done
+}
