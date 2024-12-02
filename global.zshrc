@@ -169,20 +169,20 @@ __prompt() {
 
 	content+=$'\n'
 
+	if [ -n "${SSH_CONNECTION}" ]; then
+		content+="%F{13}%B%U${host}%u%b%f:"
+	fi
+
 	content+="%F{14}${dir}%f"
 	if [ -n "${vcs_msg}" ]; then
-		content+=" on %F{10}${vcs_msg}%f"
+		content+=" %F{8}on%f %F{12}${vcs_msg}%f"
 	fi
 	if [ -n "${__PROMPT_STATUS_EXTRA}" ]; then
 		content+="${__PROMPT_STATUS_EXTRA}"
 	fi
 	content+=$'\n'
 
-	content+="%F{13}%n%f"
-	if [ -n "${SSH_CONNECTION}" ]; then
-		content+="@%F{11}%B%U${host}%u%b%f"
-	fi
-	content+=" %(?,%F{10},%F{9})%(!,#,$)%f "
+	content+="%(?,%F{10},%F{9})❱%f "
 
 	printf "%s" "${content[@]}"
 }
