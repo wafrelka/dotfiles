@@ -262,9 +262,9 @@ __fuzzy_history() {
 __fuzzy_find() {
 	local find
 	if (fd --help > /dev/null 2>&1); then
-		find=(fd . --type directory --type file)
+		find=(fd . -u --type directory --type file)
 	else
-		find=(find . -not -path '*/.*' \( -type d -or -type f \))
+		find=(find . \( -type d -or -type f \))
 	fi
 	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted | tr '\n' ' ')"
 }
