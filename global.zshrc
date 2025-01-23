@@ -50,8 +50,9 @@ workspace() {
 			return
 		fi
 	fi
-	echo "error: cannot find workspace or git root" >&2
-	return 1
+	echo "warning: cannot find workspace or git root" >&2
+	code .
+	return
 }
 
 
