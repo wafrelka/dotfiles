@@ -23,7 +23,7 @@ see() {
 	fi
 }
 
-code-workspace() {
+workspace() {
 	local dir="$(pwd)"
 	local ws_file=""
 	while true; do
