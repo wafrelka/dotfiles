@@ -282,6 +282,15 @@ __fuzzy_git_log() {
 	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
 }
 
+__fuzzy_ghq_cd() {
+	local d
+	d="$(ghq list | __fuzzy)"
+	if [ -n "$d" ]; then
+		__rewrite_buffer "cd \"$(ghq root)/$d\""
+		zle accept-line
+	fi
+}
+
 if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_history
 	zle -N __fuzzy_find
@@ -291,6 +300,10 @@ if (fzf --help > /dev/null 2>&1); then
 	bindkey '^s' __fuzzy_find
 	bindkey '^g' __fuzzy_cd
 	bindkey '^t' __fuzzy_git_log
+	if (ghq --version > /dev/null 2>&1); then
+		zle -N __fuzzy_ghq_cd
+		bindkey '^p' __fuzzy_ghq_cd
+	fi
 fi
 
 
