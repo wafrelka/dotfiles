@@ -163,7 +163,7 @@ __prompt() {
 	local vcs_msg="${vcs_info_msg_0_}"
 	local content=()
 
-	local dir="${PWD/#$HOME\//~/}"
+	local dir="${PWD/#"$HOME\/"/~/}"
 	local host="${(U)HOST%%.*}"
 
 	content+=$'\n'
