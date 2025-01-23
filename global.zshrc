@@ -158,8 +158,6 @@ zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
 setopt prompt_subst
 PROMPT='$(__prompt)'
 
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-
 __prompt() {
 
 	local vcs_msg="${vcs_info_msg_0_}"
