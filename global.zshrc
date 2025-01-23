@@ -141,7 +141,7 @@ bindkey '^b' backward-word
 autoload -Uz vcs_info add-zsh-hook
 add-zsh-hook precmd vcs_info
 
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' formats '%b'
 zstyle ':vcs_info:*' actionformats '%b(%a)'
 
