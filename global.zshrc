@@ -172,7 +172,15 @@ __prompt() {
 		content+="%F{13}%B%U${host}%u%b%f:"
 	fi
 
-	content+="%F{14}${dir}%f"
+	local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
+	if [ -n "${git_root}" ] && [[ "${PWD}" = "${git_root}"/* ]]; then
+		local dir_base="${git_root/#"$HOME\/"/~/}"
+		local dir_ext="${PWD#"$git_root/"}"
+		content+="%F{14}${dir_base} ❭ %F{14}${dir_ext}%f"
+	else
+		content+="%F{14}${dir}%f"
+	fi
+
 	if [ -n "${vcs_msg}" ]; then
 		content+=" %F{8}on%f %F{12}${vcs_msg}%f"
 	fi
