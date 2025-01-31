@@ -292,7 +292,8 @@ __fuzzy_ghq_cd() {
 	local d
 	d="$(ghq list | __fuzzy)"
 	if [ -n "$d" ]; then
-		__rewrite_buffer "cd \"$(ghq root)/$d\""
+		d="$(ghq root)/$d"
+		__rewrite_buffer "cd $(printf "%q" "$d")"
 		zle accept-line
 	fi
 }
