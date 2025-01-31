@@ -278,9 +278,14 @@ __fuzzy_find() {
 
 __fuzzy_cd() {
 	local d
-	d="$(cdr -l | sed -E "s/^[0-9]+ +//g" | __fuzzy)"
+	if (fd --help > /dev/null 2>&1); then
+		d="$(fd . --type directory | __fuzzy)"
+	else
+		d="$(find . -type d | __fuzzy)"
+	fi
 	if [ -n "$d" ]; then
-		__rewrite_buffer "cd $d"
+		__rewrite_buffer "cd $(printf "%q" "$d")"
+		zle accept-line
 	fi
 }
 
