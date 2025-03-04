@@ -16,7 +16,6 @@
 	name = wafrelka
 [alias]
 	logx = log --stat
-	lg = log --oneline --graph
 	cdiff = diff --cached
 	ndiff = diff --no-index
 	dirty = clean -ndX
