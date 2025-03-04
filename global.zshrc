@@ -65,7 +65,7 @@ export WORDCHARS="${WORDCHARS//\//}"
 
 ### completion
 
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 
 setopt always_last_prompt
 setopt auto_menu
