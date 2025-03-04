@@ -6,6 +6,9 @@
 	prune = true
 [merge]
 	ff = false
+[rebase]
+	autosquash = true
+	autostash = true
 [branch]
 	sort = -committerdate
 [user]
