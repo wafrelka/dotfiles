@@ -21,6 +21,9 @@
 	dirty = clean -ndX
 	trim = ! git for-each-ref refs/heads --omit-empty --format '%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)' | xargs git branch -D
 	sort = rebase -i origin/HEAD --update-refs
+	mybranch = ! git branch --list "$(git config private.branch-prefix)*" -v
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
+[private]
+	branch-prefix = wafrelka/
