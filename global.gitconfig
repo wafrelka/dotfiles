@@ -6,6 +6,8 @@
 	prune = true
 [merge]
 	ff = false
+[branch]
+	sort = -committerdate
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
