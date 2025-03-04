@@ -17,3 +17,4 @@
 	dirty = clean -ndX
 [diff]
 	algorithm = histogram
+	mnemonicPrefix = true
