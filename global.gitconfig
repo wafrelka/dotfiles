@@ -19,6 +19,7 @@
 	cdiff = diff --cached
 	ndiff = diff --no-index
 	dirty = clean -ndX
+	trim = ! git for-each-ref refs/heads --omit-empty --format '%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)' | xargs git branch -D
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
