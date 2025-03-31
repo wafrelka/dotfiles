@@ -24,6 +24,7 @@
 	mybranch = ! git branch --list \"$(git config private.branch-prefix)*\" -v
 	resolve-default = ! git for-each-ref refs/heads --format \"%(if:equals=$(git symbolic-ref refs/remotes/origin/HEAD))%(upstream)%(then)%(refname:short)%(end)\" --omit-empty
 	default = ! git switch \"$(git resolve-default)\"
+	fastclone = clone --filter=blob:none
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
