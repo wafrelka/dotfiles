@@ -2,9 +2,6 @@
 
 () {
 	local color="--color=auto"
-	if [[ "$OSTYPE" = "darwin"* ]]; then
-		color="-G"
-	fi
 	alias ls="ls -F $color"
 	alias la="ls -F -A $color"
 	alias ll="ls -F -l $color"
