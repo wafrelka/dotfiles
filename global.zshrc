@@ -10,7 +10,6 @@
 
 alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
-alias unzip932="unzip -O cp932"
 
 see() {
 	if [ "$#" -eq 0 ]; then
