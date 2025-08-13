@@ -1,0 +1,21 @@
+#!/bin/sh
+
+LOCAL_BIN="$HOME/.local/bin"
+
+run() {
+	printf "\$ %s\n" "$*"
+	"$@"
+}
+
+install_from_github_raw() {
+	local repo="$1"
+	local path="$2"
+	local name="${3:-"$(basename "$path")"}"
+	local dest="$LOCAL_BIN/$name"
+	local url="https://raw.githubusercontent.com/$repo/HEAD/$path"
+	run mkdir -p "$(dirname "$dest")"
+	run curl -sSLf "$url" -o "$dest"
+	run chmod +x "$dest"
+}
+
+install_from_github_raw "wafrelka/workspace" "workspace"
