@@ -4,13 +4,16 @@ set -ue
 
 HERE="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_BIN="$HOME/.local/bin"
 
 copy=""
+with_tools=""
 
 while [ "$#" -ne 0 ]; do
 	case "$1" in
 		"-c" | "--copy" ) copy="1"; shift 1;;
-		* ) printf "usage: %s [--copy]" "$0" >&2; exit 1;;
+		"--with-tools" ) with_tools="1"; shift 1;;
+		* ) printf "usage: %s [--copy] [--with-tools]\n" "$0" >&2; exit 1;;
 	esac
 done
 
@@ -31,6 +34,17 @@ put() {
 	fi
 }
 
+install_from_github() {
+	local repo="$1"
+	local path="$2"
+	local name="${3:-"$(basename "$path")"}"
+	local dest="$LOCAL_BIN/$name"
+	local url="https://raw.githubusercontent.com/$repo/HEAD/$path"
+	run mkdir -p "$(dirname "$dest")"
+	run curl -sSLf "$url" -o "$dest"
+	run chmod +x "$dest"
+}
+
 put "tmux.conf" "$HOME/.tmux.conf"
 put "global.vimrc" "$HOME/.vimrc"
 put "global.zshrc" "$HOME/.zshrc"
@@ -38,3 +52,7 @@ put "global.zshrc" "$HOME/.zshrc"
 put "global.gitconfig" "$CONFIG/git/config"
 put "global.gitignore" "$CONFIG/git/ignore"
 put "wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+
+if [ -n "$with_tools" ]; then
+	install_from_github "wafrelka/workspace" "workspace"
+fi

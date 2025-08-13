@@ -20,38 +20,6 @@ see() {
 	fi
 }
 
-workspace() {
-	local dir="$(pwd)"
-	local ws_file=""
-	while true; do
-		local ws_files=("$dir/"*".code-workspace"(.N[1,1]))
-		if [ "${#ws_files[@]}" -eq 1 ]; then
-			ws_file="${ws_files[1]}"
-			break
-		fi
-		parent="$(dirname "$dir")"
-		if [ "$parent" = "$dir" ]; then
-			break
-		fi
-		dir="$parent"
-	done
-	if [ -n "$ws_file" ]; then
-		echo "opening workspace '$ws_file'"
-		code "$ws_file"
-		return
-	else
-		local gitroot="$(git rev-parse --show-toplevel 2>/dev/null)"
-		if [ -n "$gitroot" ]; then
-			echo "opening git root '$gitroot'"
-			code "$gitroot"
-			return
-		fi
-	fi
-	echo "warning: cannot find workspace or git root" >&2
-	code .
-	return
-}
-
 
 ### environment variables
 
