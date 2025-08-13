@@ -10,6 +10,7 @@
 
 alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
+alias k9s="LANG=en_US.UTF-8 k9s"
 
 see() {
 	if [ "$#" -eq 0 ]; then
