@@ -16,6 +16,7 @@
 [diff]
 	algorithm = histogram
 	mnemonicPrefix = true
+	colorMoved = dimmed-zebra
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
