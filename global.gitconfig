@@ -8,6 +8,7 @@
 	prune = true
 [merge]
 	ff = false
+	conflictStyle = zdiff3
 [rebase]
 	autosquash = true
 	autostash = true
