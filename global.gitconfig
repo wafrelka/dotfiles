@@ -20,6 +20,9 @@
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
+[delta]
+	line-numbers = true
+	navigate = true
 [private]
 	branch-prefix = wafrelka/
 [alias]
