@@ -13,9 +13,14 @@
 	autostash = true
 [branch]
 	sort = -committerdate
+[diff]
+	algorithm = histogram
+	mnemonicPrefix = true
 [user]
 	email = wafrelka@gmail.com
 	name = wafrelka
+[private]
+	branch-prefix = wafrelka/
 [alias]
 	logx = log --stat
 	cdiff = diff --cached
@@ -28,8 +33,3 @@
 	resolve-head = ! git for-each-ref refs/heads --format \"%(if:equals=$(git symbolic-ref refs/remotes/origin/HEAD))%(upstream)%(then)%(refname:short)%(end)\" --omit-empty
 	head = ! git switch \"$(git resolve-head)\"
 	fastclone = clone --filter=blob:none
-[diff]
-	algorithm = histogram
-	mnemonicPrefix = true
-[private]
-	branch-prefix = wafrelka/
