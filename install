@@ -2,7 +2,7 @@
 
 set -ue
 
-HERE="$(cd "$(dirname "$0")"; pwd)"
+BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 copy=""
@@ -25,16 +25,16 @@ put() {
 		run mkdir -p "$parent"
 	fi
 	if [ -n "$copy" ]; then
-		run cp --remove-destination "$HERE/$1" "$2"
+		run cp --remove-destination "$BASE_DIR/$1" "$2"
 	else
-		run ln -sf "$HERE/$1" "$2"
+		run ln -sf "$BASE_DIR/$1" "$2"
 	fi
 }
 
-put "tmux.conf" "$HOME/.tmux.conf"
-put "global.vimrc" "$HOME/.vimrc"
-put "global.zshrc" "$HOME/.zshrc"
+put "files/tmux.conf" "$HOME/.tmux.conf"
+put "files/global.vimrc" "$HOME/.vimrc"
+put "files/global.zshrc" "$HOME/.zshrc"
 
-put "global.gitconfig" "$CONFIG/git/config"
-put "global.gitignore" "$CONFIG/git/ignore"
-put "wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+put "files/global.gitconfig" "$CONFIG/git/config"
+put "files/global.gitignore" "$CONFIG/git/ignore"
+put "files/wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
