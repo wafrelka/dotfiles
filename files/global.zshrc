@@ -226,9 +226,9 @@ __fuzzy_history() {
 __fuzzy_find() {
 	local find
 	if (fd --help > /dev/null 2>&1); then
-		find=(fd . -u --type directory --type file)
+		find=(fd . -u -E .git -E node_modules --type directory --type file)
 	else
-		find=(find . \( -type d -or -type f \))
+		find=(find . -type d \( -name .git -o -name node_modules \) -prune -o -print)
 	fi
 	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted | tr '\n' ' ')"
 }
