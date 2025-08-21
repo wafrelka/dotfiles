@@ -237,7 +237,7 @@ __fuzzy_cd() {
 	local d
 	d="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | __fuzzy --scheme=path)"
 	if [ -n "$d" ]; then
-		__rewrite_buffer "cd $(printf "%q" "$d")"
+		__rewrite_buffer "cd $d"
 		zle accept-line
 	fi
 }
