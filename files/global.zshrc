@@ -181,7 +181,7 @@ if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 fi
 
 
-### fuzzy finder
+### key bindings
 
 export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --info=inline-right --no-scrollbar \
 --color=dark,gutter:-1,fg+:5:underline,bg+:-1,hl:12,hl+:12:underline,pointer:13:bold,marker:14:dim \
@@ -260,6 +260,15 @@ __fuzzy_git_status() {
 	__append_to_buffer "$(git status --short | __fuzzy_multi | cut -c 4- | sed -E 's/.*-> //g')"
 }
 
+__git_root() {
+	local d
+	d="$(git rev-parse --show-toplevel)"
+	if [ -n "$d" ]; then
+		__rewrite_buffer "$(printf "cd %q" "$d")"
+		zle accept-line
+	fi
+}
+
 if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_history
 	zle -N __fuzzy_find
@@ -278,6 +287,11 @@ if (fzf --help > /dev/null 2>&1); then
 		zle -N __fuzzy_ghq_cd
 		bindkey '^p' __fuzzy_ghq_cd
 	fi
+fi
+
+if (git --version > /dev/null 2>&1); then
+	zle -N __git_root
+	bindkey '^g^r' __git_root
 fi
 
 
