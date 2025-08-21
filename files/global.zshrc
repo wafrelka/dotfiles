@@ -220,7 +220,7 @@ __fuzzy_multi_sorted() {
 
 __fuzzy_history() {
 	fc -RI
-	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | __fuzzy --query "$LBUFFER")"
+	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | __fuzzy --scheme=history --query="$LBUFFER")"
 }
 
 __fuzzy_find() {
@@ -230,12 +230,12 @@ __fuzzy_find() {
 	else
 		find=(find . -type d \( -name .git -o -name node_modules \) -prune -o -print)
 	fi
-	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted | tr '\n' ' ')"
+	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted --scheme=path | tr '\n' ' ')"
 }
 
 __fuzzy_cd() {
 	local d
-	d="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | __fuzzy)"
+	d="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | __fuzzy --scheme=path)"
 	if [ -n "$d" ]; then
 		__rewrite_buffer "cd $(printf "%q" "$d")"
 		zle accept-line
@@ -244,7 +244,7 @@ __fuzzy_cd() {
 
 __fuzzy_ghq_cd() {
 	local d
-	d="$(ghq list | __fuzzy)"
+	d="$(ghq list | __fuzzy --scheme=path)"
 	if [ -n "$d" ]; then
 		d="$(ghq root)/$d"
 		__rewrite_buffer "cd $(printf "%q" "$d")"
@@ -253,7 +253,7 @@ __fuzzy_ghq_cd() {
 }
 
 __fuzzy_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
+	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --scheme=history --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
 }
 
 __fuzzy_git_status() {
