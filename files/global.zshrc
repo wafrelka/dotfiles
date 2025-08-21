@@ -242,10 +242,6 @@ __fuzzy_cd() {
 	fi
 }
 
-__fuzzy_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
-}
-
 __fuzzy_ghq_cd() {
 	local d
 	d="$(ghq list | __fuzzy)"
@@ -256,6 +252,14 @@ __fuzzy_ghq_cd() {
 	fi
 }
 
+__fuzzy_git_log() {
+	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
+}
+
+__fuzzy_git_status() {
+	__append_to_buffer "$(git status --short | __fuzzy_multi | cut -c 4- | sed -E 's/.*-> //g')"
+}
+
 if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_history
 	zle -N __fuzzy_find
@@ -263,6 +267,13 @@ if (fzf --help > /dev/null 2>&1); then
 	bindkey '^r' __fuzzy_history
 	bindkey '^s' __fuzzy_find
 	bindkey '^t' __fuzzy_cd
+	if (git --version > /dev/null 2>&1); then
+		zle -N __fuzzy_git_log
+		zle -N __fuzzy_git_status
+		bindkey -r '^g'
+		bindkey '^g^l' __fuzzy_git_log
+		bindkey '^g^s' __fuzzy_git_status
+	fi
 	if (ghq --version > /dev/null 2>&1); then
 		zle -N __fuzzy_ghq_cd
 		bindkey '^p' __fuzzy_ghq_cd
