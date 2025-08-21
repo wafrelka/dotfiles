@@ -260,11 +260,9 @@ if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_history
 	zle -N __fuzzy_find
 	zle -N __fuzzy_cd
-	zle -N __fuzzy_git_log
 	bindkey '^r' __fuzzy_history
 	bindkey '^s' __fuzzy_find
-	bindkey '^g' __fuzzy_cd
-	bindkey '^t' __fuzzy_git_log
+	bindkey '^t' __fuzzy_cd
 	if (ghq --version > /dev/null 2>&1); then
 		zle -N __fuzzy_ghq_cd
 		bindkey '^p' __fuzzy_ghq_cd
