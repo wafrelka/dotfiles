@@ -22,8 +22,6 @@ export WORDCHARS="${WORDCHARS//\//}"
 
 ### completion
 
-autoload -Uz compinit && compinit -u
-
 setopt always_last_prompt
 setopt auto_menu
 setopt auto_param_keys
@@ -303,3 +301,7 @@ fi
 		source "$f"
 	done
 }
+
+### compinit
+
+autoload -Uz compinit && compinit -u
