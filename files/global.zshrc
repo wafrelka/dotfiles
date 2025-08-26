@@ -12,6 +12,18 @@ alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 alias k9s="LANG=en_US.UTF-8 k9s"
 
+kctx() {
+	local kctx_config="$HOME/.kube/kctx.config"
+	local ctx
+	ctx="$(KUBECONFIG="$kctx_config" kubectl config get-contexts -o name | fzf)"
+	if [ -z "$ctx" ]; then
+		echo "No context selected." >&2
+		return 1
+	fi
+	export KUBECONFIG="$kctx_config"
+	kubectl config use-context "$ctx"
+}
+
 
 ### environment variables
 
