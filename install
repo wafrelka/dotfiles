@@ -10,7 +10,7 @@ copy=""
 while [ "$#" -ne 0 ]; do
 	case "$1" in
 		"-c" | "--copy" ) copy="1"; shift 1;;
-		* ) printf "usage: %s [--copy]\n" "$0" >&2; exit 1;;
+		* ) printf "usage: %s [--copy]\n" "$(basename "$0")" >&2; exit 1;;
 	esac
 done
 
@@ -20,14 +20,17 @@ run() {
 }
 
 put() {
-	parent="$(dirname "$2")"
-	if [ "$parent" != "$HOME" ]; then
-		run mkdir -p "$parent"
+	local src="$BASE_DIR/$1"
+	local dest="$2"
+	local dest_dir
+	dest_dir="$(dirname "$dest")"
+	if [ "$dest_dir" != "$HOME" ]; then
+		run mkdir -p "$dest_dir"
 	fi
 	if [ -n "$copy" ]; then
-		run cp --remove-destination "$BASE_DIR/$1" "$2"
+		run cp --remove-destination "$src" "$dest"
 	else
-		run ln -sf "$BASE_DIR/$1" "$2"
+		run ln -sf "$src" "$dest"
 	fi
 }
 
