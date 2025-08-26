@@ -4,6 +4,11 @@ set -ue
 
 BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+if [ "$(uname)" = "Darwin" ]; then
+	NATIVE_CONFIG="$HOME/Library/Application Support"
+else
+	NATIVE_CONFIG="$CONFIG"
+fi
 
 copy=""
 
@@ -41,3 +46,6 @@ put "files/global.zshrc" "$HOME/.zshrc"
 put "files/global.gitconfig" "$CONFIG/git/config"
 put "files/global.gitignore" "$CONFIG/git/ignore"
 put "files/wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+
+put "files/k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
+put "files/k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
