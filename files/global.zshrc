@@ -236,7 +236,7 @@ __fuzzy_history() {
 __fuzzy_find() {
 	local find
 	if (fd --help > /dev/null 2>&1); then
-		find=(fd . -u -E .git -E node_modules --type directory)
+		find=(fd . -H -E .git -E node_modules --type directory)
 	else
 		find=(find . -type d \( -name .git -o -name node_modules \) -prune -o -type d -print)
 	fi
