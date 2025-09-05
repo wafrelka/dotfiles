@@ -265,11 +265,11 @@ __fuzzy_ghq_cd() {
 }
 
 __fuzzy_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --scheme=history --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1)"
+	__append_to_buffer "$(git log --oneline --decorate | __fuzzy_multi --scheme=history --preview-window down,border-top --preview "git show --summary --stat {1}" | cut -d " " -f 1 | tr '\n' ' ')"
 }
 
 __fuzzy_git_status() {
-	__append_to_buffer "$(git status --short | __fuzzy_multi | cut -c 4- | sed -E 's/.*-> //g')"
+	__append_to_buffer "$(git status --short | __fuzzy_multi | cut -c 4- | sed -E 's/.*-> //g' | tr '\n' ' ')"
 }
 
 __git_root() {
