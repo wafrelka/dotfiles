@@ -20,7 +20,9 @@ kctx() {
 		echo "No context selected." >&2
 		return 1
 	fi
-	export KUBECONFIG="$kctx_config"
+	local temp_file="$(mktemp -t kctx.XXXXXXXXXX)"
+	printf 'current-context: "%s\n"' "$ctx" > "$temp_file"
+	export KUBECONFIG="$temp_file:$kctx_config"
 	kubectl config use-context "$ctx"
 }
 
