@@ -22,4 +22,5 @@ install_from_github_raw() {
 
 install_from_github_raw "wafrelka/workspace" "workspace"
 install_from_github_raw "wafrelka/git-get" "git-get"
+install_from_github_raw "wafrelka/git-graft" "git-graft"
 install_from_github_raw "wafrelka/nap" "nap"
