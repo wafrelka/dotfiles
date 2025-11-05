@@ -238,9 +238,9 @@ __fuzzy_history() {
 __fuzzy_find() {
 	local find
 	if (fd --help > /dev/null 2>&1); then
-		find=(fd . -H -E .git -E node_modules --type directory)
+		find=(fd . -H -E .git -E node_modules)
 	else
-		find=(find . -type d \( -name .git -o -name node_modules \) -prune -o -type d -print)
+		find=(find . \( -name .git -o -name node_modules \) -prune -o ! -path . -print)
 	fi
 	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted --scheme=path | tr '\n' ' ')"
 }
@@ -286,8 +286,8 @@ if (fzf --help > /dev/null 2>&1); then
 	zle -N __fuzzy_find
 	zle -N __fuzzy_cd
 	bindkey '^r' __fuzzy_history
-	bindkey '^s' __fuzzy_find
-	bindkey '^t' __fuzzy_cd
+	bindkey '^t' __fuzzy_find
+	bindkey '^s' __fuzzy_cd
 	if (git --version > /dev/null 2>&1); then
 		zle -N __fuzzy_git_log
 		zle -N __fuzzy_git_status
