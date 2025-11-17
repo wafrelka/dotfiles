@@ -268,7 +268,7 @@ __fuzzy_ghq_cd() {
 
 __fuzzy_gist_cd() {
 	local d
-	d="$(gist list | __fuzzy --scheme=path | awk '{print $3}')"
+	d="$(gist list | __fuzzy --scheme=path | awk '{print $4}')"
 	if [ -n "$d" ]; then
 		d="$(gist root)/$d"
 		__rewrite_buffer "cd $(printf "%q" "$d")"
