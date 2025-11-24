@@ -2,6 +2,18 @@
 
 set -ue
 
+info() {
+	printf "[INFO] %s\n" "$*" >&2
+}
+
+error() {
+	printf "\e[31m[ERROR] %s\e[m\n" "$*" >&2
+}
+
+warn() {
+	printf "\e[33m[WARNING] %s\e[m\n" "$*" >&2
+}
+
 BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 LOCAL_BIN="$HOME/.local/bin"
@@ -44,16 +56,8 @@ while [ "$#" -ne 0 ]; do
 done
 
 run() {
-	printf "\e[2m\$ %s\e[m\n" "$*"
+	printf "\e[2m\$ %s\e[m\n" "$*" >&2
 	"$@"
-}
-
-error() {
-	printf "\e[31merror: %s\e[m\n" "$*" >&2
-}
-
-warn() {
-	printf "\e[33mwarning: %s\e[m\n" "$*" >&2
 }
 
 put() {
@@ -125,15 +129,17 @@ tools() {
 }
 
 if [ -n "$profile" ]; then
-	printf "profile: %s\n" "$profile"
+	info "profile: $profile"
 	BASE_DIR="$(cd "$profile"; pwd)"
 	. "$profile/install"
 fi
 
 if [ -z "$no_files" ]; then
+	info "installing config files..."
 	files
 fi
 
 if [ -z "$no_tools" ]; then
+	info "installing tools..."
 	tools
 fi
