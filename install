@@ -66,14 +66,20 @@ put() {
 	local dest="$2"
 	local dest_dir
 	dest_dir="$(dirname "$dest")"
-	if [ "$dest_dir" != "$HOME" ]; then
-		run mkdir -p "$dest_dir"
-	fi
 
 	local mnt=""
 	case "$dest" in
 		/mnt/* ) mnt="1";;
 	esac
+
+	if [ -n "$mnt" ] && (findmnt --first-only --target "$dest_dir" | grep -w ro >/dev/null 2>&1); then
+		warn "destination directory '$dest_dir' is read-only"
+		return
+	fi
+
+	if [ "$dest_dir" != "$HOME" ]; then
+		run mkdir -p "$dest_dir"
+	fi
 
 	if [ -n "$copy" ] || [ -n "$mnt" ] ; then
 		run cp --remove-destination "$src" "$dest"
