@@ -61,7 +61,13 @@ put() {
 	if [ "$dest_dir" != "$HOME" ]; then
 		run mkdir -p "$dest_dir"
 	fi
-	if [ -n "$copy" ]; then
+
+	local mnt=""
+	case "$dest" in
+		/mnt/* ) mnt="1";;
+	esac
+
+	if [ -n "$copy" ] || [ -n "$mnt" ] ; then
 		run cp --remove-destination "$src" "$dest"
 	else
 		run ln -sf "$src" "$dest"
