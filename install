@@ -35,7 +35,7 @@ run() {
 }
 
 put() {
-	local src="$BASE_DIR/$1"
+	local src="$SRC_DIR/$1"
 	local dest="$2"
 	local dest_dir
 	dest_dir="$(dirname "$dest")"
@@ -61,16 +61,18 @@ install_from_github_raw() {
 }
 
 files() {
-	put "files/tmux.conf" "$HOME/.tmux.conf"
-	put "files/global.vimrc" "$HOME/.vimrc"
-	put "files/global.zshrc" "$HOME/.zshrc"
+	SRC_DIR="$BASE_DIR/files"
 
-	put "files/global.gitconfig" "$CONFIG/git/config"
-	put "files/global.gitignore" "$CONFIG/git/ignore"
-	put "files/wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+	put "tmux.conf" "$HOME/.tmux.conf"
+	put "global.vimrc" "$HOME/.vimrc"
+	put "global.zshrc" "$HOME/.zshrc"
 
-	put "files/k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
-	put "files/k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
+	put "global.gitconfig" "$CONFIG/git/config"
+	put "global.gitignore" "$CONFIG/git/ignore"
+	put "wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+
+	put "k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
+	put "k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
 }
 
 tools() {
