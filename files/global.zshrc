@@ -27,6 +27,17 @@ kctx() {
 }
 
 
+### tool customization
+
+export LS_COLORS='di=01;36:ln=35:so=32:pi=33:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31' 'bd=46;34' 'cd=43;34' 'su=41;30' 'sg=46;30' 'tw=42;30' 'ow=43;30'
+
+
+export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --info=inline-right --no-scrollbar \
+--color=dark,gutter:-1,fg+:5:underline,bg+:-1,hl:12,hl+:12:underline,pointer:13:bold,marker:14:dim \
+--pointer=❯"
+
+
 ### environment variables
 
 export LANG=ja_JP.UTF-8
@@ -56,12 +67,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
-
-
-### ls coloring
-
-export LS_COLORS='di=01;36:ln=35:so=32:pi=33:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31' 'bd=46;34' 'cd=43;34' 'su=41;30' 'sg=46;30' 'tw=42;30' 'ow=43;30'
 
 
 ### command history
@@ -196,10 +201,6 @@ fi
 
 
 ### key bindings
-
-export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --info=inline-right --no-scrollbar \
---color=dark,gutter:-1,fg+:5:underline,bg+:-1,hl:12,hl+:12:underline,pointer:13:bold,marker:14:dim \
---pointer=❯"
 
 __rewrite_buffer() {
 	BUFFER="$1"
