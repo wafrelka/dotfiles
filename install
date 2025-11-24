@@ -14,9 +14,11 @@ LOCAL_BIN="$HOME/.local/bin"
 copy=""
 no_files=""
 no_tools=""
+profile=""
 
 usage() {
-	printf "usage: %s [--copy] [--no-files] [--no-tools] [--help]\n" "$(basename "$0")" >&2
+	printf "usage: %s [--copy] [--no-files] [--no-tools] [--help] [profile]\n" \
+		"$(basename "$0")" >&2
 }
 
 while [ "$#" -ne 0 ]; do
@@ -25,7 +27,15 @@ while [ "$#" -ne 0 ]; do
 		"--no-files" ) no_files="1"; shift 1;;
 		"--no-tools" ) no_tools="1"; shift 1;;
 		"-h" | "--help" ) usage; exit 0;;
-		* ) usage; exit 1;;
+		* )
+			if [ -z "$profile" ]; then
+				profile="$1"
+				shift 1
+			else
+				usage
+				exit 1
+			fi
+		;;
 	esac
 done
 
@@ -89,6 +99,12 @@ tools() {
 	install_from_github_raw "wafrelka/gist" "gist"
 	install_from_github_raw "wafrelka/nap" "nap"
 }
+
+if [ -n "$profile" ]; then
+	printf "profile: %s\n" "$profile"
+	BASE_DIR="$(cd "$profile"; pwd)"
+	. "$profile/install"
+fi
 
 if [ -z "$no_files" ]; then
 	files
