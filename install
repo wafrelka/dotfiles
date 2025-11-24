@@ -59,6 +59,9 @@ install_from_github_raw() {
 	local path="$2"
 	local name="${3:-"$(basename "$path")"}"
 	local dest="$LOCAL_BIN/$name"
+	if [ -f "$dest" ]; then
+		return
+	fi
 	local url="https://raw.githubusercontent.com/$repo/HEAD/$path"
 	run mkdir -p "$(dirname "$dest")"
 	run curl -sSLf "$url" -o "$dest"
