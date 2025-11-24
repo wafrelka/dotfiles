@@ -9,13 +9,23 @@ if [ "$(uname)" = "Darwin" ]; then
 else
 	NATIVE_CONFIG="$CONFIG"
 fi
+LOCAL_BIN="$HOME/.local/bin"
 
 copy=""
+no_files=""
+no_tools=""
+
+usage() {
+	printf "usage: %s [--copy] [--no-files] [--no-tools] [--help]\n" "$(basename "$0")" >&2
+}
 
 while [ "$#" -ne 0 ]; do
 	case "$1" in
 		"-c" | "--copy" ) copy="1"; shift 1;;
-		* ) printf "usage: %s [--copy]\n" "$(basename "$0")" >&2; exit 1;;
+		"--no-files" ) no_files="1"; shift 1;;
+		"--no-tools" ) no_tools="1"; shift 1;;
+		"-h" | "--help" ) usage; exit 0;;
+		* ) usage; exit 1;;
 	esac
 done
 
@@ -39,13 +49,41 @@ put() {
 	fi
 }
 
-put "files/tmux.conf" "$HOME/.tmux.conf"
-put "files/global.vimrc" "$HOME/.vimrc"
-put "files/global.zshrc" "$HOME/.zshrc"
+install_from_github_raw() {
+	local repo="$1"
+	local path="$2"
+	local name="${3:-"$(basename "$path")"}"
+	local dest="$LOCAL_BIN/$name"
+	local url="https://raw.githubusercontent.com/$repo/HEAD/$path"
+	run mkdir -p "$(dirname "$dest")"
+	run curl -sSLf "$url" -o "$dest"
+	run chmod +x "$dest"
+}
 
-put "files/global.gitconfig" "$CONFIG/git/config"
-put "files/global.gitignore" "$CONFIG/git/ignore"
-put "files/wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+files() {
+	put "files/tmux.conf" "$HOME/.tmux.conf"
+	put "files/global.vimrc" "$HOME/.vimrc"
+	put "files/global.zshrc" "$HOME/.zshrc"
 
-put "files/k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
-put "files/k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
+	put "files/global.gitconfig" "$CONFIG/git/config"
+	put "files/global.gitignore" "$CONFIG/git/ignore"
+	put "files/wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
+
+	put "files/k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
+	put "files/k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
+}
+
+tools() {
+	install_from_github_raw "wafrelka/workspace" "workspace"
+	install_from_github_raw "wafrelka/git-get" "git-get"
+	install_from_github_raw "wafrelka/gist" "gist"
+	install_from_github_raw "wafrelka/nap" "nap"
+}
+
+if [ -z "$no_files" ]; then
+	files
+fi
+
+if [ -z "$no_tools" ]; then
+	tools
+fi
