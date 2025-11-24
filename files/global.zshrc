@@ -36,7 +36,7 @@ zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31'
 
 
 export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --pointer=❯ \
---info=inline-right --no-scrollbar \
+--info=inline-right --no-scrollbar --gutter=' ' \
 --color=dark,gutter:-1,fg+:5:underline,bg+:-1,hl:12,hl+:12:underline,\
 pointer:13:bold,marker:14:dim"
 
