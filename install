@@ -4,12 +4,16 @@ set -ue
 
 BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+LOCAL_BIN="$HOME/.local/bin"
+NATIVE_CONFIG="$CONFIG"
+NATIVE_HOME="$HOME"
+
 if [ "$(uname)" = "Darwin" ]; then
 	NATIVE_CONFIG="$HOME/Library/Application Support"
-else
-	NATIVE_CONFIG="$CONFIG"
 fi
-LOCAL_BIN="$HOME/.local/bin"
+if [ -f "/usr/bin/wslpath" ]; then
+	NATIVE_HOME="$(wslpath "$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d "\n\r")")"
+fi
 
 copy=""
 no_files=""
