@@ -48,10 +48,18 @@ run() {
 	"$@"
 }
 
+error() {
+	printf "\e[31merror: %s\e[m\n" "$*" >&2
+}
+
+warn() {
+	printf "\e[33mwarning: %s\e[m\n" "$*" >&2
+}
+
 put() {
 	local src="$SRC_DIR/$1"
 	if ! [ -f "$src" ]; then
-		printf "error: source file '%s' does not exist\n" "$src" >&2
+		error "source file '$src' does not exist"
 		exit 1
 	fi
 
