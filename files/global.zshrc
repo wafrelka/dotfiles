@@ -254,16 +254,6 @@ __fzf_gist_cd() {
 	fi
 }
 
-__fzf_git_log() {
-	__write_line "$(
-		git log --oneline --decorate |
-		fzf -m --scheme=history --preview-window down,border-top \
-		--preview "git show --summary --stat {1}" |
-		cut -d " " -f 1 |
-		tr '\n' ' '
-	)"
-}
-
 __fzf_git_status() {
 	__write_line "$(
 		git status --short |
@@ -291,10 +281,8 @@ if (fzf --help > /dev/null 2>&1) || true; then
 	bindkey '^t' __fzf_find
 	bindkey '^s' __fzf_cdr
 	if (git --version > /dev/null 2>&1); then
-		zle -N __fzf_git_log
 		zle -N __fzf_git_status
 		bindkey -r '^g'
-		bindkey '^g^l' __fzf_git_log
 		bindkey '^g^s' __fzf_git_status
 	fi
 	if (ghq --version > /dev/null 2>&1); then
