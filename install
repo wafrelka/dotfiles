@@ -16,7 +16,6 @@ warn() {
 
 BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
-LOCAL_BIN="$HOME/.local/bin"
 NATIVE_CONFIG="$CONFIG"
 NATIVE_HOME="$HOME"
 
@@ -95,8 +94,7 @@ put() {
 install_from_github_raw() {
 	local repo="$1"
 	local path="$2"
-	local name="${3:-"$(basename "$path")"}"
-	local dest="$LOCAL_BIN/$name"
+	local dest="${3:-"$(basename "$path")"}"
 	if [ -f "$dest" ]; then
 		return
 	fi
