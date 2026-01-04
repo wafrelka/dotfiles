@@ -2,7 +2,7 @@ local wezterm = require "wezterm"
 local act = wezterm.action
 
 
--- color scheme --
+--- color scheme ---
 
 function update_alpha(c, alpha)
 	local h, s, l, a = wezterm.color.parse(c):hsla()
@@ -15,7 +15,7 @@ local TRANSPARENT_BACKGROUND = update_alpha(COLOR_SCHEME.background, OPACITY)
 COLOR_SCHEME.tab_bar = { background = TRANSPARENT_BACKGROUND }
 
 
--- tab styling --
+--- tab styling ---
 
 function tab_title(tab_info)
 	local title = tab_info.tab_title
@@ -66,7 +66,7 @@ end
 wezterm.on('format-tab-title', format_tab_title)
 
 
--- config --
+--- general config ---
 
 local mouse_bindings = {
 	{
@@ -98,7 +98,7 @@ local config = {
 	audible_bell = "Disabled",
 }
 
--- site specific config
+--- local config ---
 
 local status, update_config = pcall(require, 'local')
 if status then
