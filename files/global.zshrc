@@ -273,32 +273,45 @@ __git_root() {
 	fi
 }
 
-if (fzf --help > /dev/null 2>&1) || true; then
-	zle -N __fzf_history
-	zle -N __fzf_find
-	zle -N __fzf_cdr
-	bindkey '^r' __fzf_history
-	bindkey '^t' __fzf_find
-	bindkey '^s' __fzf_cdr
-	if (git --version > /dev/null 2>&1); then
-		zle -N __fzf_git_status
-		bindkey -r '^g'
-		bindkey '^g^s' __fzf_git_status
-	fi
-	if (ghq --version > /dev/null 2>&1); then
-		zle -N __fzf_ghq_cd
-		bindkey '^p' __fzf_ghq_cd
-	fi
-	if (GIST_ROOT="." gist --version > /dev/null 2>&1); then
-		zle -N __fzf_gist_cd
-		bindkey '^n' __fzf_gist_cd
-	fi
-fi
+__bindkey() {
+	zle -N "$2" && bindkey "$1" "$2"
+}
 
-if (git --version > /dev/null 2>&1); then
-	zle -N __git_root
-	bindkey '^g^r' __git_root
-fi
+__shortcuts_init() {
+	local fzf_version="$(fzf --version 2>/dev/null)"
+	local git_version="$(git --version 2>/dev/null)"
+	local ghq_version="$(ghq --version 2>/dev/null)"
+	local gist_version="$(gist --version 2>/dev/null)"
+
+	if [ -n "$fzf_version" ]; then
+		__bindkey '^r' __fzf_history
+		__bindkey '^t' __fzf_find
+		__bindkey '^s' __fzf_cdr
+	fi
+
+	if [ -n "$fzf_version" ] && [ -n "$git_version" ]; then
+		bindkey -r '^g'
+		__bindkey '^g^s' __fzf_git_status
+	fi
+
+	if [ -n "$fzf_version" ] && [ -n "$ghq_version" ]; then
+		__bindkey '^p' __fzf_ghq_cd
+	fi
+
+	if [ -n "$fzf_version" ] && [ -n "$gist_version" ]; then
+		__bindkey '^n' __fzf_gist_cd
+	fi
+
+	if [ -n "$git_version" ]; then
+		bindkey -r '^g'
+		__bindkey '^g^r' __git_root
+	fi
+
+	add-zsh-hook -d precmd __shortcuts_init
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd __shortcuts_init
 
 
 ## --- local zshrc ---
