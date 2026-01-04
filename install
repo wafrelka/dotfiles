@@ -124,10 +124,7 @@ files() {
 }
 
 tools() {
-	install_from_github_raw "wafrelka/workspace" "workspace"
-	install_from_github_raw "wafrelka/git-get" "git-get"
-	install_from_github_raw "wafrelka/gist" "gist"
-	install_from_github_raw "wafrelka/nap" "nap"
+	:
 }
 
 if [ -n "$profile" ]; then
