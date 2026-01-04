@@ -61,7 +61,7 @@ run() {
 }
 
 put() {
-	local src="$SRC_DIR/$1"
+	local src="$PWD/$1"
 	if ! [ -f "$src" ]; then
 		error "source file '$src' does not exist"
 		exit 1
@@ -107,7 +107,7 @@ install_from_github_raw() {
 }
 
 files() {
-	SRC_DIR="$BASE_DIR/files"
+	cd "$BASE_DIR/files"
 
 	put "tmux.conf" "$HOME/.tmux.conf"
 	put "global.vimrc" "$HOME/.vimrc"
@@ -119,6 +119,8 @@ files() {
 
 	put "k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
 	put "k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
+
+	cd - >/dev/null
 }
 
 tools() {
