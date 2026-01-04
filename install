@@ -142,3 +142,5 @@ if [ -z "$no_tools" ]; then
 	info "installing tools..."
 	tools
 fi
+
+info "installation completed."
