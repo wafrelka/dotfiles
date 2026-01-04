@@ -129,6 +129,8 @@ if [ -n "$profile" ]; then
 	info "profile: $profile"
 	BASE_DIR="$(cd "$profile"; pwd)"
 	. "$profile/install"
+else
+	info "profile: default"
 fi
 
 if [ -z "$no_files" ]; then
