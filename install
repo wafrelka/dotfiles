@@ -2,6 +2,16 @@
 
 set -ue
 
+# provided variables
+BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+NATIVE_CONFIG="$CONFIG"
+NATIVE_HOME="$HOME"
+
+# config variables
+SRC_DIR="$BASE_DIR/files"
+BIN_DIR="$HOME/.local/bin"
+
 info() {
 	printf "[INFO] %s\n" "$*" >&2
 }
@@ -13,11 +23,6 @@ error() {
 warn() {
 	printf "\e[33m[WARNING] %s\e[m\n" "$*" >&2
 }
-
-BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
-CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
-NATIVE_CONFIG="$CONFIG"
-NATIVE_HOME="$HOME"
 
 if [ "$(uname)" = "Darwin" ]; then
 	NATIVE_CONFIG="$HOME/Library/Application Support"
@@ -60,28 +65,33 @@ run() {
 }
 
 put() {
-	local src="$(readlink -f "$1")"
+	local src="$1"
+	case "$1" in
+		/* ) ;;
+		* ) src="$SRC_DIR/$1" ;;
+	esac
+
 	if ! [ -f "$src" ]; then
-		error "source file '$1' does not exist"
+		error "source file '$src' does not exist"
 		exit 1
 	fi
 
 	local dest="$2"
-	local dest_dir
-	dest_dir="$(dirname "$dest")"
+	local parent
+	parent="$(dirname "$dest")"
 
 	local mnt=""
 	case "$dest" in
 		/mnt/* ) mnt="1";;
 	esac
 
-	if [ -n "$mnt" ] && (findmnt --first-only --target "$dest_dir" | grep -w ro >/dev/null 2>&1); then
-		warn "destination directory '$dest_dir' is read-only"
+	if [ -n "$mnt" ] && (findmnt --first-only --target "$parent" | grep -w ro >/dev/null 2>&1); then
+		warn "destination directory '$parent' is read-only"
 		return
 	fi
 
-	if [ "$dest_dir" != "$HOME" ]; then
-		run mkdir -p "$dest_dir"
+	if [ "$parent" != "$HOME" ]; then
+		run mkdir -p "$parent"
 	fi
 
 	if [ -n "$copy" ] || [ -n "$mnt" ] ; then
@@ -94,7 +104,7 @@ put() {
 install_from_github_raw() {
 	local repo="$1"
 	local path="$2"
-	local dest="${3:-"$(basename "$path")"}"
+	local dest="${3:-"$BIN_DIR/$(basename "$path")"}"
 	if [ -f "$dest" ]; then
 		return
 	fi
@@ -105,8 +115,6 @@ install_from_github_raw() {
 }
 
 files() {
-	cd "$BASE_DIR/files"
-
 	put "tmux.conf" "$HOME/.tmux.conf"
 	put "global.vimrc" "$HOME/.vimrc"
 	put "global.zshrc" "$HOME/.zshrc"
@@ -117,8 +125,6 @@ files() {
 
 	put "k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
 	put "k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
-
-	cd - >/dev/null
 }
 
 tools() {
@@ -128,6 +134,7 @@ tools() {
 if [ -n "$profile" ]; then
 	info "profile: $profile"
 	BASE_DIR="$(cd "$profile"; pwd)"
+	SRC_DIR="$BASE_DIR/files"
 	. "$profile/install"
 else
 	info "profile: default"
