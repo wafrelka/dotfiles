@@ -317,7 +317,7 @@ add-zsh-hook precmd __shortcuts_init
 ## --- local zshrc ---
 
 () {
-	local files=("${ZDOTDIR:-"${HOME}"}/.site.zshrc"(N))
+	local files=("${ZDOTDIR:-"${HOME}"}/.zshrc.local"(N))
 	for f in "${files[@]}"; do
 		source "$f"
 	done
