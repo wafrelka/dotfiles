@@ -191,123 +191,119 @@ fi
 
 ## --- shortcuts ---
 
-__rewrite_buffer() {
+__replace_line() {
 	BUFFER="$1"
 	CURSOR="${#BUFFER}"
 	zle redisplay
 }
 
-__append_to_buffer() {
-	local left="${LBUFFER}$1"
+__write_line() {
 	BUFFER="${LBUFFER}$1${RBUFFER}"
-	CURSOR="${#left}"
+	CURSOR+="${#1}"
 	zle redisplay
 }
 
-__fuzzy() {
-	if (fzf --help > /dev/null 2>&1); then
-		fzf "$@"
-	fi
-}
-
-__fuzzy_multi() {
-	if (fzf --help > /dev/null 2>&1); then
-		fzf -m "$@"
-	fi
-}
-
-__fuzzy_multi_sorted() {
-	if (fzf --help > /dev/null 2>&1); then
-		fzf -m --sort "$@"
-	fi
-}
-
-__fuzzy_history() {
+__fzf_history() {
 	fc -RI
-	__rewrite_buffer "$(history -nr 1 | awk '!a[$0]++' | __fuzzy --scheme=history --query="$LBUFFER")"
+	__replace_line "$(
+		history -nr 1 |
+		awk '!a[$0]++' |
+		fzf --scheme=history --query="$LBUFFER"
+	)"
 }
 
-__fuzzy_find() {
+__fzf_find() {
 	local find
+	find=(find . \( -name .git -o -name node_modules \) -prune -o ! -path . -print)
 	if (fd --help > /dev/null 2>&1); then
 		find=(fd . -H -E .git -E node_modules)
-	else
-		find=(find . \( -name .git -o -name node_modules \) -prune -o ! -path . -print)
 	fi
-	__append_to_buffer "$("${find[@]}" | __fuzzy_multi_sorted --scheme=path | tr '\n' ' ')"
+	__write_line "$(
+		"${find[@]}" |
+		fzf -m --sort --scheme=path |
+		tr '\n' ' '
+	)"
 }
 
-__fuzzy_cd() {
-	local d
-	d="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | __fuzzy --scheme=path)"
-	if [ -n "$d" ]; then
-		__rewrite_buffer "cd $d"
+__fzf_cdr() {
+	local dest
+	dest="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | fzf --scheme=path)"
+	if [ -n "$dest" ]; then
+		__replace_line "cd $dest"
 		zle accept-line
 	fi
 }
 
-__fuzzy_ghq_cd() {
-	local d
-	d="$(ghq list | __fuzzy --scheme=path)"
-	if [ -n "$d" ]; then
-		d="$(ghq root)/$d"
-		__rewrite_buffer "cd $(printf "%q" "$d")"
+__fzf_ghq_cd() {
+	local dest
+	dest="$(ghq list | fzf --scheme=path)"
+	if [ -n "$dest" ]; then
+		dest="$(ghq root)/$dest"
+		__replace_line "cd $(printf "%q" "$dest")"
 		zle accept-line
 	fi
 }
 
-__fuzzy_gist_cd() {
-	local d
-	d="$(gist list | __fuzzy --scheme=path | awk '{print $4}')"
-	if [ -n "$d" ]; then
-		d="$(gist root)/$d"
-		__rewrite_buffer "cd $(printf "%q" "$d")"
+__fzf_gist_cd() {
+	local dest
+	dest="$(gist list | fzf --scheme=path --accept-nth 4)"
+	if [ -n "$dest" ]; then
+		dest="$(gist root)/$dest"
+		__replace_line "cd $(printf "%q" "$dest")"
 		zle accept-line
 	fi
 }
 
-__fuzzy_git_log() {
-	__append_to_buffer "$(git log --oneline --decorate | \
-		__fuzzy_multi --scheme=history --preview-window down,border-top \
-		--preview "git show --summary --stat {1}" | \
-		cut -d " " -f 1 | tr '\n' ' ')"
+__fzf_git_log() {
+	__write_line "$(
+		git log --oneline --decorate |
+		fzf -m --scheme=history --preview-window down,border-top \
+		--preview "git show --summary --stat {1}" |
+		cut -d " " -f 1 |
+		tr '\n' ' '
+	)"
 }
 
-__fuzzy_git_status() {
-	__append_to_buffer "$(git status --short | __fuzzy_multi | cut -c 4- | \
-		sed -E 's/.*-> //g' | tr '\n' ' ')"
+__fzf_git_status() {
+	__write_line "$(
+		git status --short |
+		fzf -m |
+		cut -c 4- |
+		sed -E 's/.*-> //g' |
+		tr '\n' ' '
+	)"
 }
 
 __git_root() {
-	local d
-	d="$(git rev-parse --show-toplevel)"
-	if [ -n "$d" ]; then
-		__rewrite_buffer "$(printf "cd %q" "$d")"
+	local root
+	root="$(git rev-parse --show-toplevel)"
+	if [ -n "$root" ]; then
+		__replace_line "$(printf "cd %q" "$root")"
 		zle accept-line
 	fi
 }
 
-if (fzf --help > /dev/null 2>&1); then
-	zle -N __fuzzy_history
-	zle -N __fuzzy_find
-	zle -N __fuzzy_cd
-	bindkey '^r' __fuzzy_history
-	bindkey '^t' __fuzzy_find
-	bindkey '^s' __fuzzy_cd
+if (fzf --help > /dev/null 2>&1) || true; then
+	zle -N __fzf_history
+	zle -N __fzf_find
+	zle -N __fzf_cdr
+	bindkey '^r' __fzf_history
+	bindkey '^t' __fzf_find
+	bindkey '^s' __fzf_cdr
 	if (git --version > /dev/null 2>&1); then
-		zle -N __fuzzy_git_log
-		zle -N __fuzzy_git_status
+		zle -N __fzf_git_log
+		zle -N __fzf_git_status
 		bindkey -r '^g'
-		bindkey '^g^l' __fuzzy_git_log
-		bindkey '^g^s' __fuzzy_git_status
+		bindkey '^g^l' __fzf_git_log
+		bindkey '^g^s' __fzf_git_status
 	fi
 	if (ghq --version > /dev/null 2>&1); then
-		zle -N __fuzzy_ghq_cd
-		bindkey '^p' __fuzzy_ghq_cd
+		zle -N __fzf_ghq_cd
+		bindkey '^p' __fzf_ghq_cd
 	fi
 	if (GIST_ROOT="." gist --version > /dev/null 2>&1); then
-		zle -N __fuzzy_gist_cd
-		bindkey '^n' __fuzzy_gist_cd
+		zle -N __fzf_gist_cd
+		bindkey '^n' __fzf_gist_cd
 	fi
 fi
 
