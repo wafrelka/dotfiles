@@ -114,6 +114,18 @@ install_from_github_raw() {
 	run chmod +x "$dest"
 }
 
+install_by_mise() {
+	local tool="$1"
+	local dest="${2:-"$BIN_DIR/$tool"}"
+	local temp_dir="$(mktemp -d)"
+	if [ -f "$dest" ]; then
+		return
+	fi
+	run mise install-into "$tool@latest" "$temp_dir/$tool"
+	local src="$(find "$temp_dir/$tool" -name "$tool" -type f)"
+	run cp "$src" "$dest"
+}
+
 files() {
 	put "tmux.conf" "$HOME/.tmux.conf"
 	put "global.vimrc" "$HOME/.vimrc"
