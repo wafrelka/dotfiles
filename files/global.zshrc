@@ -328,4 +328,6 @@ fi
 
 ## --- compinit ---
 
-autoload -Uz compinit && compinit -u
+ZCOMPDUMP="${XDG_CACHE_HOME:-"$HOME/.cache"}/zsh/zcompdump"
+mkdir -p "$(dirname "$ZCOMPDUMP")"
+autoload -Uz compinit && compinit -u -w -d "$ZCOMPDUMP"
