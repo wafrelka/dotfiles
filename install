@@ -60,9 +60,9 @@ run() {
 }
 
 put() {
-	local src="$PWD/$1"
+	local src="$(readlink -f "$1")"
 	if ! [ -f "$src" ]; then
-		error "source file '$src' does not exist"
+		error "source file '$1' does not exist"
 		exit 1
 	fi
 
