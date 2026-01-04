@@ -1,13 +1,9 @@
-### aliases
+## --- aliases ---
 
-() {
-	local color="--color=auto"
-	alias ls="ls -F $color"
-	alias la="ls -F -A $color"
-	alias ll="ls -F -l $color"
-	alias lx="ls -F -A -l $color"
-}
-
+alias ls="ls -F --color=auto"
+alias la="ls -F -A --color=auto"
+alias ll="ls -F -l --color=auto"
+alias lx="ls -F -A -l --color=auto"
 alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 alias k9s="LANG=en_US.UTF-8 k9s"
@@ -27,13 +23,21 @@ kctx() {
 }
 
 
-### tool customization
+## --- environment variables ---
+
+export LANG="ja_JP.UTF-8"
+export EDITOR="vim"
+export WORDCHARS="${WORDCHARS//\//}"
+
+path+=("$HOME/.local/bin")
+
+
+## --- tool config ---
 
 export LS_COLORS='di=01;36:ln=35:so=32:pi=33:ex=01;31:bd=46;34:cd=43;34:su=41;30:'\
 'sg=46;30:tw=42;30:ow=43;30'
 zstyle ':completion:*' list-colors 'di=01;36' 'ln=35' 'so=32' 'pi=33' 'ex=01;31' \
 'bd=46;34' 'cd=43;34' 'su=41;30' 'sg=46;30' 'tw=42;30' 'ow=43;30'
-
 
 export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --pointer=â¯ \
 --info=inline-right --no-scrollbar --gutter=' ' \
@@ -41,16 +45,7 @@ export FZF_DEFAULT_OPTS="--exact --no-sort --track --cycle --reverse --pointer=â
 pointer:13:bold,marker:14:dim"
 
 
-### environment variables
-
-export LANG=ja_JP.UTF-8
-export EDITOR=vim
-export WORDCHARS="${WORDCHARS//\//}"
-
-path+=("$HOME/.local/bin")
-
-
-### completion
+## --- zsh completion ---
 
 setopt always_last_prompt
 setopt auto_menu
@@ -72,7 +67,7 @@ zstyle ':completion:*:manuals' separate-sections true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
 
 
-### command history
+## --- zsh history ---
 
 HISTFILE="${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/history"
 mkdir -p "$(dirname "$HISTFILE")"
@@ -84,26 +79,20 @@ setopt hist_ignore_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt share_history
+setopt autopushd
+setopt pushd_ignore_dups
+
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+zstyle ':chpwd:*' recent-dirs-max 40
+zstyle ':chpwd:*' recent-dirs-file "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/recent-dirs"
 
 bindkey '^r' history-incremental-pattern-search-backward
 bindkey '^s' history-incremental-pattern-search-forward
 
 
-### directory history
-
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
-
-setopt autopushd
-setopt pushd_ignore_dups
-
-zstyle ':chpwd:*' recent-dirs-max 40
-zstyle ':chpwd:*' recent-dirs-file "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh/recent-dirs"
-
-mkdir -p "${XDG_STATE_HOME:-"$HOME/.local/state"}/zsh"
-
-
-### other options
+## --- zsh other options ---
 
 setopt print_eight_bit
 setopt no_flow_control
@@ -115,7 +104,7 @@ bindkey '^f' forward-word
 bindkey '^b' backward-word
 
 
-### VCS
+## --- zsh prompt ---
 
 autoload -Uz vcs_info add-zsh-hook
 add-zsh-hook precmd vcs_info
@@ -130,9 +119,6 @@ zstyle ':vcs_info:git:*' stagedstr "!"
 zstyle ':vcs_info:git:*' unstagedstr "?"
 zstyle ':vcs_info:git:*' formats '%b%u%c'
 zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
-
-
-### prompt
 
 setopt prompt_subst
 PROMPT='$(__prompt)'
@@ -174,7 +160,7 @@ __prompt() {
 }
 
 
-### operating system command
+## --- terminal config ---
 
 __update_term_title() {
 	local title
@@ -203,7 +189,7 @@ if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 fi
 
 
-### key bindings
+## --- shortcuts ---
 
 __rewrite_buffer() {
 	BUFFER="$1"
@@ -331,7 +317,7 @@ if (git --version > /dev/null 2>&1); then
 fi
 
 
-### site-specific zshrc
+## --- local zshrc ---
 
 () {
 	local files=("${ZDOTDIR:-"${HOME}"}/.site.zshrc"(N))
@@ -340,6 +326,6 @@ fi
 	done
 }
 
-### compinit
+## --- compinit ---
 
 autoload -Uz compinit && compinit -u
