@@ -180,6 +180,15 @@ if [[ "$TERM" =~ "^(kterm|xterm)" ]]; then
 fi
 
 
+## --- tmux adjustment ---
+
+__update_ssh_auth_sock_in_tmux() {
+	[ -n "$TMUX" ] || return
+	eval "$(tmux show-environment -s SSH_AUTH_SOCK 2>/dev/null)"
+}
+add-zsh-hook precmd __update_ssh_auth_sock_in_tmux
+
+
 ## --- shortcuts ---
 
 __replace_line() {
