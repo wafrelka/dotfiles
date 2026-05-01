@@ -8,11 +8,13 @@ alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 
 kubectl() {
-	KUBECONFIG="$HOME/.kube/interactive.config" command kubectl "$@"
+	local kubeconfig="${KUBECONFIG-"$HOME/.kube/interactive.config"}"
+	KUBECONFIG="$kubeconfig" command kubectl "$@"
 }
 
 k9s() {
-	KUBECONFIG="$HOME/.kube/interactive.config" LANG=en_US.UTF-8 command k9s "$@"
+	local kubeconfig="${KUBECONFIG-"$HOME/.kube/interactive.config"}"
+	KUBECONFIG="$kubeconfig" LANG=en_US.UTF-8 command k9s "$@"
 }
 
 
