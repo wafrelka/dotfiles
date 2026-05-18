@@ -125,7 +125,7 @@ __prompt() {
 
 	content+=$'\n'
 
-	if [ -n "${SSH_CONNECTION}" ]; then
+	if [ -n "${SSH_CONNECTION}" ] || [[ "${WEZTERM_EXECUTABLE:-}" =~ "/wezterm-mux-server" ]]; then
 		content+="%F{13}%B%U${host}%u%b%f:"
 	fi
 
