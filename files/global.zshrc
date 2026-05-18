@@ -8,14 +8,13 @@ alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 
 export INTERACTIVE_KUBECONFIG="$HOME/.kube/interactive.config"
-
-kubectl() {
-	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" command kubectl "$@"
+with_interactive_kubeconfig() {
+	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" command "$@"
 }
-
-k9s() {
-	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" LANG=en_US.UTF-8 command k9s "$@"
-}
+kubectl() { with_interactive_kubeconfig kubectl "$@"; }
+k9s() { LANG=en_US.UTF-8 with_interactive_kubeconfig k9s "$@" ; }
+stern() { with_interactive_kubeconfig stern "$@" ; }
+flux() { with_interactive_kubeconfig flux "$@" ; }
 
 
 ## --- environment variables ---
