@@ -7,14 +7,14 @@ alias lx="ls -F -A -l --color=auto"
 alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 
+export INTERACTIVE_KUBECONFIG="$HOME/.kube/interactive.config"
+
 kubectl() {
-	local kubeconfig="${KUBECONFIG-"$HOME/.kube/interactive.config"}"
-	KUBECONFIG="$kubeconfig" command kubectl "$@"
+	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" command kubectl "$@"
 }
 
 k9s() {
-	local kubeconfig="${KUBECONFIG-"$HOME/.kube/interactive.config"}"
-	KUBECONFIG="$kubeconfig" LANG=en_US.UTF-8 command k9s "$@"
+	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" LANG=en_US.UTF-8 command k9s "$@"
 }
 
 
