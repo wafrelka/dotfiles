@@ -17,12 +17,16 @@ COLOR_SCHEME.tab_bar = { background = TRANSPARENT_BACKGROUND }
 
 --- tab styling ---
 
-function tab_title(tab_info)
-	local title = tab_info.tab_title
+function tab_title(tab)
+	local title = tab.tab_title
 	if title and #title > 0 then
 		return title
 	end
-	return tab_info.active_pane.title
+	local pane = tab.active_pane
+	if pane.domain_name ~= "local" then
+		return pane.domain_name .. "::" .. pane.title
+	end
+	return pane.title
 end
 
 function format_tab_title(tab, tabs, panes, config, hover, max_width)
@@ -31,8 +35,14 @@ function format_tab_title(tab, tabs, panes, config, hover, max_width)
 	local intensity = "Normal"
 
 	if tab.is_active or hover then
-		fg = COLOR_SCHEME.background
-		bg = COLOR_SCHEME.ansi[2]
+		local pane = tab.active_pane
+		if pane.domain_name ~= "local" then
+			fg = COLOR_SCHEME.background
+			bg = COLOR_SCHEME.ansi[5]
+		else
+			fg = COLOR_SCHEME.background
+			bg = COLOR_SCHEME.ansi[2]
+		end
 		intensity = "Bold"
 	end
 
