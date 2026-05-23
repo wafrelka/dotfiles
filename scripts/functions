@@ -85,7 +85,7 @@ github_content_url() {
 }
 
 usage() {
-	printf "usage: %s [--install-tools] [--help] [profile-dir]\n" "$(basename "$0")" >&2
+	printf "usage: %s [--tools] [--help] [profile-dir]\n" "$(basename "$0")" >&2
 }
 
 parse_args() {
@@ -94,7 +94,7 @@ parse_args() {
 
 	while [ "$#" -ne 0 ]; do
 		case "$1" in
-			"--install-tools" ) INSTALL_TOOLS="true"; shift 1;;
+			"--tools" ) INSTALL_TOOLS="true"; shift 1;;
 			"-h" | "--help" ) usage; exit 0;;
 			"-"* ) usage; exit 1;;
 			* )
