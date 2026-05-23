@@ -96,6 +96,7 @@ parse_args() {
 		case "$1" in
 			"--install-tools" ) INSTALL_TOOLS="true"; shift 1;;
 			"-h" | "--help" ) usage; exit 0;;
+			"-"* ) usage; exit 1;;
 			* )
 				if [ -z "${PROFILE_DIR}" ]; then
 					PROFILE_DIR="$1" && shift 1
