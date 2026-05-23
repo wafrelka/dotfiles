@@ -2,164 +2,38 @@
 
 set -ue
 
-# provided variables
-BASE_DIR="$(cd "$(dirname "$0")"; pwd)"
-CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
-NATIVE_CONFIG="$CONFIG"
-NATIVE_HOME="$HOME"
+BASE_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+echo "${BASE_DIR}/scripts/functions"
+. "${BASE_DIR}/scripts/functions"
 
-# config variables
-SRC_DIR="$BASE_DIR/files"
-BIN_DIR="$HOME/.local/bin"
-
-info() {
-	printf "[INFO] %s\n" "$*" >&2
+clone() {
+	clone_into "${BASE_DIR}/files/$1" "$2"
 }
 
-error() {
-	printf "\e[31m[ERROR] %s\e[m\n" "$*" >&2
+install_files() {
+	clone "tmux.conf" "${HOME}/.tmux.conf"
+	clone "global.vimrc" "${HOME}/.vimrc"
+	clone "global.zshrc" "${HOME}/.zshrc"
+
+	clone "global.gitconfig" "${CONFIG}/git/config"
+	clone "global.gitignore" "${CONFIG}/git/ignore"
+	clone "wezterm.lua" "${CONFIG}/wezterm/wezterm.lua"
+
+	clone "k9s.config.yaml" "${PLATFORM_CONFIG}/k9s/config.yaml"
+	clone "k9s.default-skin.yaml" "${PLATFORM_CONFIG}/k9s/skins/default-skin.yaml"
 }
 
-warn() {
-	printf "\e[33m[WARNING] %s\e[m\n" "$*" >&2
-}
+main() {
+	parse_args "$@"
 
-if [ "$(uname)" = "Darwin" ]; then
-	NATIVE_CONFIG="$HOME/Library/Application Support"
-fi
-if [ -f "/usr/bin/wslpath" ]; then
-	NATIVE_HOME="$(wslpath "$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d "\n\r")")"
-fi
+	info "installing files..."
+	install_files
 
-copy=""
-no_files=""
-no_tools=""
-profile=""
-
-usage() {
-	printf "usage: %s [--copy] [--no-files] [--no-tools] [--help] [profile]\n" \
-		"$(basename "$0")" >&2
-}
-
-while [ "$#" -ne 0 ]; do
-	case "$1" in
-		"-c" | "--copy" ) copy="1"; shift 1;;
-		"--no-files" ) no_files="1"; shift 1;;
-		"--no-tools" ) no_tools="1"; shift 1;;
-		"-h" | "--help" ) usage; exit 0;;
-		* )
-			if [ -z "$profile" ]; then
-				profile="$1"
-				shift 1
-			else
-				usage
-				exit 1
-			fi
-		;;
-	esac
-done
-
-run() {
-	printf "\e[2m\$ %s\e[m\n" "$*" >&2
-	"$@"
-}
-
-put() {
-	local src="$1"
-	case "$1" in
-		/* ) ;;
-		* ) src="$SRC_DIR/$1" ;;
-	esac
-
-	if ! [ -f "$src" ]; then
-		error "source file '$src' does not exist"
-		exit 1
+	if [ -n "${INSTALL_TOOLS}" ]; then
+		info "installing tools..."
 	fi
 
-	local dest="$2"
-	local parent
-	parent="$(dirname "$dest")"
-
-	local mnt=""
-	case "$dest" in
-		/mnt/* ) mnt="1";;
-	esac
-
-	if [ -n "$mnt" ] && (findmnt --first-only --target "$parent" | grep -w ro >/dev/null 2>&1); then
-		warn "destination directory '$parent' is read-only"
-		return
-	fi
-
-	if [ "$parent" != "$HOME" ]; then
-		run mkdir -p "$parent"
-	fi
-
-	if [ -n "$copy" ] || [ -n "$mnt" ] ; then
-		run cp --remove-destination "$src" "$dest"
-	else
-		run ln -sf "$src" "$dest"
-	fi
+	info "installation completed."
 }
 
-install_from_github_raw() {
-	local repo="$1"
-	local path="$2"
-	local dest="${3:-"$BIN_DIR/$(basename "$path")"}"
-	if [ -f "$dest" ]; then
-		return
-	fi
-	local url="https://raw.githubusercontent.com/$repo/HEAD/$path"
-	run mkdir -p "$(dirname "$dest")"
-	run curl -sSLf "$url" -o "$dest"
-	run chmod +x "$dest"
-}
-
-install_by_mise() {
-	local tool="$1"
-	local dest="${2:-"$BIN_DIR/$tool"}"
-	local temp_dir="$(mktemp -d)"
-	if [ -f "$dest" ]; then
-		return
-	fi
-	run mise install-into "$tool@latest" "$temp_dir/$tool"
-	local src="$(find "$temp_dir/$tool" -name "$tool" -type f)"
-	run cp "$src" "$dest"
-}
-
-files() {
-	put "tmux.conf" "$HOME/.tmux.conf"
-	put "global.vimrc" "$HOME/.vimrc"
-	put "global.zshrc" "$HOME/.zshrc"
-
-	put "global.gitconfig" "$CONFIG/git/config"
-	put "global.gitignore" "$CONFIG/git/ignore"
-	put "wezterm.lua" "$CONFIG/wezterm/wezterm.lua"
-
-	put "k9s.config.yaml" "$NATIVE_CONFIG/k9s/config.yaml"
-	put "k9s.default-skin.yaml" "$NATIVE_CONFIG/k9s/skins/default-skin.yaml"
-}
-
-tools() {
-	:
-}
-
-if [ -n "$profile" ]; then
-	info "profile: $profile"
-	BASE_DIR="$(cd "$profile"; pwd)"
-	SRC_DIR="$BASE_DIR/files"
-	. "$profile/install"
-else
-	info "profile: default"
-fi
-
-if [ -z "$no_files" ]; then
-	info "installing config files..."
-	files
-fi
-
-if [ -z "$no_tools" ]; then
-	info "installing tools..."
-	tools
-fi
-
-info "installation completed."
+main "$@"

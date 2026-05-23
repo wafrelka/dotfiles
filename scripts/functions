@@ -1,0 +1,108 @@
+#!/usr/bin/env sh
+
+CONFIG="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
+
+PLATFORM_CONFIG="${CONFIG}"
+if [ "$(uname)" = "Darwin" ]; then
+	PLATFORM_CONFIG="${HOME}/Library/Application Support"
+fi
+
+PLATFORM_HOME="${HOME}"
+if [ -f "/usr/bin/wslpath" ]; then
+	PLATFORM_HOME="$(wslpath "$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d "\n\r")")"
+fi
+
+info() {
+	printf "[INFO] %s\n" "$*" >&2
+}
+
+error() {
+	printf "\e[31m[ERROR] %s\e[m\n" "$*" >&2
+}
+
+warn() {
+	printf "\e[33m[WARNING] %s\e[m\n" "$*" >&2
+}
+
+_run() {
+	printf "\e[2m\$ %s\e[m\n" "$*" >&2
+	"$@"
+}
+
+is_writable() {
+	findmnt --first-only --target "$1" -o OPTIONS | grep -w rw >/dev/null 2>&1
+}
+
+clone_into() {
+	src="$1"
+	dest="$2"
+
+	if ! [ -f "${src}" ]; then
+		error "source file '${src}' does not exist"
+		return 1
+	fi
+
+	parent="$(dirname -- "${dest}")"
+	if ! [ -d "${parent}" ]; then
+		_run mkdir -p -- "${parent}"
+	fi
+
+	mnt=""
+	case "${dest}" in
+		/mnt/* ) mnt="true";;
+	esac
+
+	if [ -n "${mnt}" ] ; then
+		_run cp --remove-destination -- "${src}" "${dest}"
+	else
+		_run ln -sf -- "${src}" "${dest}"
+	fi
+}
+
+download_into() {
+	url="$1"
+	dest="$2"
+
+	parent="$(dirname -- "${dest}")"
+	if ! [ -d "${parent}" ]; then
+		_run mkdir -p -- "${parent}"
+	fi
+
+	if [ -f "${dest}" ]; then
+		return
+	fi
+
+	_run mkdir -p -- "${parent}"
+	_run curl -sSLf -o "${dest}" -- "${url}"
+	_run chmod +x -- "${dest}"
+}
+
+github_content_url() {
+	repo="$1"
+	path="$2"
+	url="https://raw.githubusercontent.com/${repo}/HEAD/${path}"
+	printf "%s" "${url}"
+}
+
+usage() {
+	printf "usage: %s [--install-tools] [--help] [profile-dir]\n" "$(basename "$0")" >&2
+}
+
+parse_args() {
+	INSTALL_TOOLS=""
+	PROFILE_DIR=""
+
+	while [ "$#" -ne 0 ]; do
+		case "$1" in
+			"--install-tools" ) INSTALL_TOOLS="true"; shift 1;;
+			"-h" | "--help" ) usage; exit 0;;
+			* )
+				if [ -z "${PROFILE_DIR}" ]; then
+					PROFILE_DIR="$1" && shift 1
+				else
+					usage && exit 1
+				fi
+			;;
+		esac
+	done
+}
