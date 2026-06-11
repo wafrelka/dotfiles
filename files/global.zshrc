@@ -7,14 +7,28 @@ alias lx="ls -F -A -l --color=auto"
 alias less="less -R --tabs=4"
 alias grep="grep --color=auto"
 
-export INTERACTIVE_KUBECONFIG="$HOME/.kube/interactive.config"
-with_interactive_kubeconfig() {
-	KUBECONFIG="${KUBECONFIG:-"$INTERACTIVE_KUBECONFIG"}" command "$@"
+## --- kubernetes functions ---
+
+export XKUBE_KUBECONFIG="$HOME/.kube/xkube.config"
+xkube() {
+	KUBECONFIG="${KUBECONFIG:-"$XKUBE_KUBECONFIG"}" command "$@"
 }
-kubectl() { with_interactive_kubeconfig kubectl "$@"; }
-k9s() { LANG=en_US.UTF-8 with_interactive_kubeconfig k9s "$@" ; }
-stern() { with_interactive_kubeconfig stern "$@" ; }
-flux() { with_interactive_kubeconfig flux "$@" ; }
+xkube-ctx() {
+	local ctx="$1"
+	local rest=("${@:2}")
+	local tmp="$(mktemp --tmpdir xkube.XXXXXXXXXX.config)"
+	{
+		export KUBECONFIG="${tmp}:${KUBECONFIG:-"$XKUBE_KUBECONFIG"}"
+		command kubectl config use-context "${ctx}" || return 1
+		command "${rest[@]}"
+	} always {
+		rm -f -- "${tmp}"
+	}
+}
+kubectl() { xkube kubectl "$@"; }
+k9s() { LANG=en_US.UTF-8 xkube k9s "$@" ; }
+stern() { xkube stern "$@" ; }
+flux() { xkube flux "$@" ; }
 
 
 ## --- environment variables ---
