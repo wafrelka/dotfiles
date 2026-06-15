@@ -129,17 +129,21 @@ zstyle ':vcs_info:git:*' actionformats '%b%u%c(%a)'
 setopt prompt_subst
 PROMPT='$(__prompt)'
 
+__is_remote() {
+	[ -n "${SSH_CONNECTION}" ] || [[ "${WEZTERM_EXECUTABLE:-}" =~ "/wezterm-mux-server" ]]
+}
+
 __prompt() {
 
-	local vcs_msg="${vcs_info_msg_0_}"
 	local content=()
 
 	local dir="${PWD/#"$HOME\/"/~/}"
 	local host="${(U)HOST%%.*}"
+	local vcs_status="${vcs_info_msg_0_}"
+	local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 
 	content+=$'\n'
 
-	local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 	if [ -n "${git_root}" ] && [[ "${PWD}" = "${git_root}"/* ]]; then
 		local dir_base="${git_root/#"$HOME\/"/~/}"
 		local dir_ext="${PWD#"$git_root/"}"
@@ -148,15 +152,17 @@ __prompt() {
 		content+="%F{14}${dir}%f"
 	fi
 
-	if [ -n "${vcs_msg}" ]; then
-		content+=" %F{8}on%f %F{12}${vcs_msg}%f"
+	if [ -n "${vcs_status}" ]; then
+		content+=" %F{8}on%f %F{12}${vcs_status}%f"
 	fi
+
 	if [ -n "${__PROMPT_STATUS_EXTRA}" ]; then
 		content+="${__PROMPT_STATUS_EXTRA}"
 	fi
+
 	content+=$'\n'
 
-	if [ -n "${SSH_CONNECTION}" ] || [[ "${WEZTERM_EXECUTABLE:-}" =~ "/wezterm-mux-server" ]]; then
+	if __is_remote; then
 		content+="%F{13}%B${host}%b%f %(?,%F{10},%F{9})❱❱%f "
 	else
 		content+="%(?,%F{10},%F{9})❱%f "
