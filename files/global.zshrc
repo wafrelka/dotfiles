@@ -139,10 +139,6 @@ __prompt() {
 
 	content+=$'\n'
 
-	if [ -n "${SSH_CONNECTION}" ] || [[ "${WEZTERM_EXECUTABLE:-}" =~ "/wezterm-mux-server" ]]; then
-		content+="%F{13}%B%U${host}%u%b%f:"
-	fi
-
 	local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 	if [ -n "${git_root}" ] && [[ "${PWD}" = "${git_root}"/* ]]; then
 		local dir_base="${git_root/#"$HOME\/"/~/}"
@@ -160,7 +156,11 @@ __prompt() {
 	fi
 	content+=$'\n'
 
-	content+="%(?,%F{10},%F{9})❱%f "
+	if [ -n "${SSH_CONNECTION}" ] || [[ "${WEZTERM_EXECUTABLE:-}" =~ "/wezterm-mux-server" ]]; then
+		content+="%F{13}%B${host}%b%f %(?,%F{10},%F{9})❱❱%f "
+	else
+		content+="%(?,%F{10},%F{9})❱%f "
+	fi
 
 	printf "%s" "${content[@]}"
 }
