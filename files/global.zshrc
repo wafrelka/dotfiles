@@ -143,6 +143,9 @@ __prompt() {
 	local git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 
 	content+=$'\n'
+	if __is_remote; then
+		content+="%F{13}%B%U${host}%u%b%f "
+	fi
 
 	if [ -n "${git_root}" ] && [[ "${PWD}" = "${git_root}"/* ]]; then
 		local dir_base="${git_root/#"$HOME\/"/~/}"
@@ -161,12 +164,7 @@ __prompt() {
 	fi
 
 	content+=$'\n'
-
-	if __is_remote; then
-		content+="%F{13}%B${host}%b%f %(?,%F{10},%F{9})❱❱%f "
-	else
-		content+="%(?,%F{10},%F{9})❱%f "
-	fi
+	content+="%(?,%F{10},%F{9})❱%f "
 
 	printf "%s" "${content[@]}"
 }
