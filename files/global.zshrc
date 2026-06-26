@@ -244,15 +244,6 @@ __fzf_find() {
 	)"
 }
 
-__fzf_cdr() {
-	local dest
-	dest="$(cdr -l | sed -E 's/^[0-9]+[[:space:]]+//g' | fzf --scheme=path)"
-	if [ -n "$dest" ]; then
-		__replace_line "cd $dest"
-		zle accept-line
-	fi
-}
-
 __fzf_ghq_cd() {
 	local dest
 	dest="$(ghq list | fzf --scheme=path)"
@@ -305,7 +296,6 @@ __shortcuts_init() {
 	if [ -n "$fzf_version" ]; then
 		__bindkey '^r' __fzf_history
 		__bindkey '^t' __fzf_find
-		__bindkey '^s' __fzf_cdr
 	fi
 
 	if [ -n "$fzf_version" ] && [ -n "$git_version" ]; then
