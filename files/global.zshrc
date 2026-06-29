@@ -222,6 +222,21 @@ __write_line() {
 	zle redisplay
 }
 
+__find() {
+	local find_type_args=()
+	local fd_type_args=()
+	local typ="${1:-}"
+	if [ -n "$typ" ]; then
+		find_type_args=(-type "$typ")
+		fd_type_args=(--type "$typ")
+	fi
+	if (fd --help > /dev/null 2>&1); then
+		fd . "${fd_type_args[@]}" -H -E .git -E node_modules
+	else
+		find . \( -name .git -o -name node_modules \) -prune -o "${find_type_args[@]}" ! -path . -print
+	fi
+}
+
 __fzf_history() {
 	fc -RI
 	__replace_line "$(
@@ -232,16 +247,20 @@ __fzf_history() {
 }
 
 __fzf_find() {
-	local find
-	find=(find . \( -name .git -o -name node_modules \) -prune -o ! -path . -print)
-	if (fd --help > /dev/null 2>&1); then
-		find=(fd . -H -E .git -E node_modules)
-	fi
 	__write_line "$(
-		"${find[@]}" |
+		__find |
 		fzf -m --sort --scheme=path |
 		tr '\n' ' '
 	)"
+}
+
+__fzf_cd() {
+	dest="$(__find directory | fzf --scheme=path)"
+	if [ -n "$dest" ]; then
+		dest="$root/$dest"
+		__replace_line "cd $(printf "%q" "$dest")"
+		zle accept-line
+	fi
 }
 
 __fzf_ghq_cd() {
@@ -295,7 +314,8 @@ __shortcuts_init() {
 
 	if [ -n "$fzf_version" ]; then
 		__bindkey '^r' __fzf_history
-		__bindkey '^t' __fzf_find
+		__bindkey '^s' __fzf_find
+		__bindkey '^t' __fzf_cd
 	fi
 
 	if [ -n "$fzf_version" ] && [ -n "$git_version" ]; then
